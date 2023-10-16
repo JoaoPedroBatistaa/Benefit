@@ -75,17 +75,16 @@ function Login() {
 
       console.log(user.Ativo);
 
-      if (user.Ativo == true) {
-        localStorage.setItem("userId", user.id);
-        localStorage.setItem("link", user.link);
-        localStorage.setItem("nomeCliente", user.nomeCliente);
-        localStorage.setItem("cpf", user.cpf);
-        localStorage.setItem("Telefone", user.Telefone);
-        localStorage.setItem("email", user.email);
-        localStorage.setItem("senha", user.senha);
-        localStorage.setItem("paymentId", user.paymentId);
-        router.push("/");
-      }
+      localStorage.setItem("userId", user.id);
+      localStorage.setItem("link", user.link);
+      localStorage.setItem("nomeCliente", user.nomeCliente);
+      localStorage.setItem("cpf", user.cpf);
+      localStorage.setItem("Telefone", user.Telefone);
+      localStorage.setItem("email", user.email);
+      localStorage.setItem("senha", user.senha);
+      localStorage.setItem("paymentId", user.paymentId);
+      localStorage.setItem("Ativo", user.Ativo.toString());
+      router.push("/");
     } else {
       setError("Email ou senha incorretos");
       console.log("nao tem senha");
@@ -101,7 +100,7 @@ function Login() {
             <div className="logo-slogan">
               <Image className="logo-benefit" src={Logo} alt="Logo-BeneFit" />
               <h2 className="sub">
-                Cadastre-se para acessar o clube de benefícios
+                Faça login para acessar o clube de benefícios
               </h2>
             </div>
             <div className="cadastro-input">

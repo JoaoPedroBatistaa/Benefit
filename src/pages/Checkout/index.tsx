@@ -158,10 +158,10 @@ export default function Checkout() {
         <div className={styles.checkoutContainer}>
           <div className={styles.steps}>
             <div className={styles.stepName}>
-              <p className={styles.this}>Checkout</p>
               <p className={styles.next}>Cadastro</p>
+              <p className={styles.this}>Checkout</p>
             </div>
-            <div className={styles.bar}></div>
+            <div className={styles.barC}></div>
           </div>
           <MercadoPago />
         </div>

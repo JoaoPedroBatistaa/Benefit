@@ -1,0 +1,205 @@
+.Container {
+  display: flex;
+  flex-direction: row;
+}
+
+.ContainerLeft {
+  height: 100vh;
+  width: 70vw;
+
+  position: absolute;
+  top: 0;
+  left: 0; /* Posiciona à esquerda */
+
+  background-color: #00000050;
+
+  z-index: 99999;
+}
+
+.ContainerRight {
+  height: 100vh;
+  width: 30vw;
+
+  position: absolute;
+  top: 0;
+  right: 0; /* Posiciona à direita */
+
+  background-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  z-index: 99999;
+}
+
+.header {
+  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+
+  width: 100%;
+  height: 70px;
+
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+}
+
+.back {
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  cursor: pointer;
+}
+
+.titleHeader {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Outfit", sans-serif;
+
+  color: #383838;
+}
+
+.icon {
+  margin-top: 3rem;
+  border-radius: 10rem;
+  padding: 12px;
+  border: 2px dashed #08d40a;
+}
+
+.perfilIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #08d40b5e;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 10rem;
+}
+
+.iconLet {
+  font-size: 64px;
+  font-weight: 700;
+  font-family: "Outfit", sans-serif;
+
+  color: #08d40a;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Outfit", sans-serif;
+
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  color: #08d40a;
+}
+
+.data {
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 1rem;
+  border: 1px solid #cacaca;
+
+  width: 80%;
+
+  margin-top: 1.5rem;
+}
+
+.dataData {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Outfit", sans-serif;
+
+  color: #cacaca;
+}
+
+.cancel {
+  color: red;
+  text-decoration: underline;
+
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Outfit", sans-serif;
+
+  width: 80%;
+
+  margin-top: 1rem;
+}
+
+.Button {
+  width: 80%;
+
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Outfit", sans-serif;
+
+  color: #fff;
+  background-color: #08d40a;
+
+  border-radius: 0.5rem;
+
+  padding: 12px;
+
+  margin-bottom: 0.8rem;
+  margin-top: 5rem;
+}
+
+.outButton {
+  width: 80%;
+
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Outfit", sans-serif;
+
+  color: #fff;
+  background-color: #d40808;
+
+  border-radius: 0.5rem;
+
+  padding: 12px;
+}
+
+.scroll-lock {
+  overflow: hidden !important;
+}
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 767px) {
+  .ContainerLeft {
+    display: none; /* Oculta ContainerLeft em dispositivos móveis */
+  }
+
+  .header {
+    height: 100px;
+  }
+
+  .perfilIcon {
+    height: 10rem;
+    width: 10rem;
+  }
+
+  .titleHeader {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .cancel {
+    margin-bottom: 3rem;
+  }
+
+  .outButton {
+    margin-bottom: 3rem;
+  }
+
+  .ContainerRight {
+    width: 100vw;
+    height: 100%; /* Ocupa a tela inteira em dispositivos móveis */
+  }
+
+  // html,
+  // body {
+  //   overflow: hidden;
+  // }
+}

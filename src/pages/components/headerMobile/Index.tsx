@@ -3,10 +3,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Logo from "../../../../public/logoClara.svg";
 
+import Perfil from "../perfil/perfil";
+
+import { useRouter } from "next/router";
+
 const HeaderMobile = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [link, setLink] = useState<string | null>(null);
+
+  const router = useRouter();
 
   // Monitorar mudanças no localStorage
   useEffect(() => {
@@ -201,61 +207,84 @@ const HeaderMobile = () => {
     }
   };
 
+  const [isPerfilVisible, setIsPerfilVisible] = useState(false);
+
+  const togglePerfilVisibility = () => {
+    setIsPerfilVisible(!isPerfilVisible);
+  };
+
+  const handleClosePerfil = () => {
+    setIsPerfilVisible(false);
+    setIsLoggedIn(false);
+  };
+
   return (
-    <div className="Navbar">
-      <Link href="/">
-        <Image className="logo-benefit-header" src={Logo} alt="Logo-BeneFit" />
-      </Link>
-      <div className={`nav-items ${isOpen && "open"}`}>
+    <>
+      <Perfil
+        isPerfilVisible={isPerfilVisible}
+        onClosePerfil={handleClosePerfil}
+      ></Perfil>
+      <div className="Navbar">
         <Link href="/">
-          <p className="nav-item" onClick={() => setIsOpen(false)}>
-            Início
-          </p>
+          <Image
+            className="logo-benefit-header"
+            src={Logo}
+            alt="Logo-BeneFit"
+          />
         </Link>
-        {isLoggedIn ? (
-          <a id="item" href="#contato">
-            Contato
+        <div className={`nav-items ${isOpen && "open"}`}>
+          <a
+            id="item"
+            onClick={() => {
+              router.push("/#inicio");
+            }}
+          >
+            Início
           </a>
-        ) : (
-          <a id="item" href="#cliente">
+
+          <a
+            id="item"
+            onClick={() => {
+              router.push("/#cliente");
+            }}
+          >
             Faça parte
           </a>
-        )}
-        {isLoggedIn ? (
-          <p id="item" onClick={cancelSubscription}>
-            Cancelar plano
-          </p>
-        ) : (
-          <a id="item" href="#contato">
+
+          <a
+            id="item"
+            onClick={() => {
+              router.push("/#contato");
+            }}
+          >
             Contato
           </a>
-        )}
-        {isLoggedIn ? (
-          <p id="item" onClick={handleLogout}>
-            Fazer logout
-          </p>
-        ) : (
-          <Link href="/loginTrue">
-            <p id="item">Fazer login</p>
-          </Link>
-        )}
-        {isLoggedIn ? (
-          <button className="Login" onClick={handleSubmit}>
-            Acessar clube
-          </button>
-        ) : (
-          <Link href="/Checkout">
-            <button className="Login">Obter acesso</button>
-          </Link>
-        )}
+
+          {isLoggedIn ? (
+            <p id="item"></p>
+          ) : (
+            <Link href="/loginTrue">
+              <p id="item">Fazer login</p>
+            </Link>
+          )}
+          {isLoggedIn ? (
+            <button className="Login" onClick={togglePerfilVisibility}>
+              Meu perfil
+            </button>
+          ) : (
+            <Link href="/login">
+              <button className="Login">Obter acesso</button>
+            </Link>
+          )}
+        </div>
+        <div
+          className={`nav-toggle ${isOpen && "open"}`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <div className="bar"></div>
+        </div>
       </div>
-      <div
-        className={`nav-toggle ${isOpen && "open"}`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <div className="bar"></div>
-      </div>
-    </div>
+    </>
   );
 };
 

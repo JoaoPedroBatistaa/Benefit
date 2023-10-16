@@ -22,7 +22,7 @@ const Cliente = () => {
             mesmo!
           </h3>
           <Link href="/Checkout">
-            <button className="botao__cliente">Faça parte</button>
+            <button className="botao__cliente">Quero economizar já</button>
           </Link>
         </div>
       </div>

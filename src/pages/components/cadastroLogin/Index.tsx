@@ -4,9 +4,12 @@ import Logo from "../../../../public/logoClara.svg";
 
 import styles from "../../../styles/Login.module.scss";
 
+import { useRouter } from "next/router";
 import { addDoc, collection, db } from "../../../../firebase";
 
 function CadastroLogin() {
+  const router = useRouter();
+
   // REQUISIÇÃO BLOQUEADA POR ERRO DE POLÍTICA DE CORS
   const senhaRef = useRef<HTMLInputElement>(null);
   const nomeRef = useRef<HTMLInputElement>(null);
@@ -139,7 +142,9 @@ function CadastroLogin() {
         });
 
         localStorage.setItem("link", url);
-        window.location.href = url;
+        localStorage.setItem("senha", emailRef.current?.value.toString() || "");
+        localStorage.setItem("email", senhaRef.current?.value.toString() || "");
+        router.push("/Checkout");
       } else {
         console.log(
           "URL de redirecionamento não encontrada na resposta do servidor"
@@ -157,10 +162,10 @@ function CadastroLogin() {
         <div className="cadastro-clube">
           <div className={styles.stepsC}>
             <div className={styles.stepName}>
-              <p className={styles.next}>Checkout</p>
               <p className={styles.this}>Cadastro</p>
+              <p className={styles.next}>Checkout</p>
             </div>
-            <div className={styles.barC}></div>
+            <div className={styles.bar}></div>
           </div>
 
           <div className="cadastro-formC">
