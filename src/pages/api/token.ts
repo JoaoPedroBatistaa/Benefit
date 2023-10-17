@@ -16,7 +16,7 @@ export default async function handler(req: any, res: any) {
     data: qs.stringify(data),
     headers: {
       'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-      'Referer': 'https://clubebenefit.com.br' // Adicionado cabeçalho 'Referer'
+      'Referer': 'https://clubbenefit.com.br' // Adicionado cabeçalho 'Referer'
     }
   })
     .then((response) => {
