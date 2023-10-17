@@ -64,7 +64,7 @@ function Login() {
     e.preventDefault();
     console.log("Handling login...");
 
-    console.log(teste);
+    // console.log(teste);
 
     const user = teste.find(
       (user) => user.email === email && user.senha === senha
@@ -73,7 +73,7 @@ function Login() {
     if (user) {
       setUserId(user.id);
 
-      console.log(user.Ativo);
+      // console.log(user.Ativo);
 
       localStorage.setItem("userId", user.id);
       localStorage.setItem("link", user.link);
