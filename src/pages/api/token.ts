@@ -16,20 +16,30 @@ export default async function handler(req: any, res: any) {
     data: qs.stringify(data),
     headers: {
       'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-      'Referer': 'https://clubbenefit.com.br' // Adicionado cabeçalho 'Referer'
+      'Referer': 'https://clubbenefit.com.br'
     }
   })
     .then((response) => {
       if (response.data && response.data.dado && response.data.dado.access_token) {
         res.status(200).json({ accessToken: response.data.dado.access_token });
       } else {
-        console.error('Resposta inesperada: ', response.data);
-        res.status(500).json({ error: 'Unexpected response structure' });
+        console.error('Resposta inesperada: ', JSON.stringify(response.data, null, 2));
+        res.status(500).json({
+          error: 'Unexpected response structure',
+          responseData: response.data
+        });
       }
     })
     .catch((error) => {
-      console.error('Erro ao obter o token de acesso: ', error.response ? error.response.data : error.message);
-      res.status(500).json({ error: error.response ? error.response.data : error.message });
+      if (error.response) {
+        console.error('Erro na resposta da API: ', JSON.stringify(error.response.data, null, 2));
+        res.status(500).json({
+          error: 'API Response Error',
+          responseData: error.response.data
+        });
+      } else {
+        console.error('Erro ao obter o token de acesso: ', error.message);
+        res.status(500).json({ error: error.message });
+      }
     });
-
 }
