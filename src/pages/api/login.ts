@@ -12,7 +12,7 @@ export default async function handler(req: any, res: any) {
 
   try {
     const response = await axios.post(
-      "https://apiv4.marktclub.net.br/login/api",
+      "https://apiv4.markt.club/login/api",
       data,
       {
         headers: {

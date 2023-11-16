@@ -12,7 +12,7 @@ export default async function handler(req: any, res: any) {
 
   axios({
     method: 'post',
-    url: "https://apiv4.marktclub.net.br/token",
+    url: "https://apiv4.markt.club/token",
     data: qs.stringify(data),
     headers: {
       'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
