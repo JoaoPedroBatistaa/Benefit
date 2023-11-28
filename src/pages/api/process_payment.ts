@@ -16,7 +16,7 @@ export default async (req: { method: string; body: { payer: any; token: any; }; 
         auto_recurring: {
           frequency: 1,
           frequency_type: "months",
-          repetitions: 1,
+          repetitions: 12,
           billing_day: 10,
           billing_day_proportional: true,
           free_trial: {
