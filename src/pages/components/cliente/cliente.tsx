@@ -21,7 +21,7 @@ const Cliente = () => {
             Inscreva-se agora por apenas R$9,90 e comece a economizar hoje
             mesmo!
           </h3>
-          <Link href="/Checkout">
+          <Link href="/login">
             <button className="botao__cliente">Quero economizar já</button>
           </Link>
         </div>
