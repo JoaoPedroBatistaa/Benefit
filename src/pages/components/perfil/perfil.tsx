@@ -7,7 +7,7 @@ export default function Perfil(props: any) {
 
   const router = useRouter();
 
-  // scroll
+  // scroll;
   useEffect(() => {
     if (isPerfilVisible) {
       // Bloqueie o scroll apenas quando isPerfilVisible for true

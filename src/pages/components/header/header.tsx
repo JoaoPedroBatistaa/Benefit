@@ -149,8 +149,18 @@ const Header = () => {
 
   const handleClosePerfil = () => {
     setIsPerfilVisible(false);
-    setIsLoggedIn(false);
+    // setIsLoggedIn(false);
   };
+
+  // SCROLL
+
+  useEffect(() => {
+    if (isPerfilVisible) {
+      document.body.classList.add("scroll-lock");
+    } else {
+      document.body.classList.remove("scroll-lock");
+    }
+  }, [isPerfilVisible]);
 
   return (
     <>

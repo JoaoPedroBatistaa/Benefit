@@ -215,7 +215,7 @@ const HeaderMobile = () => {
 
   const handleClosePerfil = () => {
     setIsPerfilVisible(false);
-    setIsLoggedIn(false);
+    // setIsLoggedIn(false);
   };
 
   return (
