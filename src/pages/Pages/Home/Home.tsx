@@ -6,21 +6,20 @@ import Cliente from "../../components/cliente/cliente";
 import Footer from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import HeaderMobile from "../../components/headerMobile/Index";
-import SectionApp from "../../components/sectionApp/sectionApp";
 import SectionCalculadora from "../../components/sectionCalculadora/sectionCalculadora";
 function Home() {
   return (
     <div>
       <section>
-        <Header/>
+        <Header />
         <HeaderMobile />
         <CarroselBanner />
-        <Banner/>
+        <Banner />
         <CarrroselMobile />
         <Cliente />
         <CashBack />
         <SectionCalculadora />
-        <SectionApp />
+        {/* <SectionApp /> */}
         <Footer />
       </section>
     </div>
