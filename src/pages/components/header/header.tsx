@@ -152,15 +152,10 @@ const Header = () => {
     // setIsLoggedIn(false);
   };
 
-  // SCROLL
-
-  useEffect(() => {
-    if (isPerfilVisible) {
-      document.body.classList.add("scroll-lock");
-    } else {
-      document.body.classList.remove("scroll-lock");
-    }
-  }, [isPerfilVisible]);
+  const handleLogoutPerfil = () => {
+    setIsPerfilVisible(false);
+    setIsLoggedIn(false);
+  };
 
   return (
     <>
@@ -168,6 +163,7 @@ const Header = () => {
         <Perfil
           isPerfilVisible={isPerfilVisible}
           onClosePerfil={handleClosePerfil}
+          onLogoutPerfil={handleLogoutPerfil}
         ></Perfil>
         <div className="content-header-desktop">
           <Link href="/">

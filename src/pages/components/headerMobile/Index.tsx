@@ -218,11 +218,17 @@ const HeaderMobile = () => {
     // setIsLoggedIn(false);
   };
 
+  const handleLogoutPerfil = () => {
+    setIsPerfilVisible(false);
+    setIsLoggedIn(false);
+  };
+
   return (
     <>
       <Perfil
         isPerfilVisible={isPerfilVisible}
         onClosePerfil={handleClosePerfil}
+        onLogoutPerfil={handleLogoutPerfil}
       ></Perfil>
       <div className="Navbar">
         <Link href="/">

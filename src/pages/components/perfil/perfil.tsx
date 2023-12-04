@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./perfil.module.scss";
 
 export default function Perfil(props: any) {
-  const { isPerfilVisible, onClosePerfil } = props;
+  const { isPerfilVisible, onClosePerfil, onLogoutPerfil } = props;
 
   const router = useRouter();
 
@@ -133,7 +133,7 @@ export default function Perfil(props: any) {
 
   const handleLogout = () => {
     localStorage.clear();
-    onClosePerfil();
+    onLogoutPerfil();
   };
 
   // ACESSAR CLUBE
