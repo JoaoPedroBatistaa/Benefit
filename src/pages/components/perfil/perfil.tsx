@@ -284,13 +284,11 @@ export default function Perfil(props: any) {
                 className={styles.dataData}
                 style={{ color: ativo === "true" ? "#08d40a" : "red" }}
               >
-                {paymentId !== "" && paymentId !== "undefined"
-                  ? "Ativo"
-                  : "Inativo"}
+                {ativo === "true" ? "Ativo" : "Inativo"}
               </p>
             </div>
 
-            {paymentId !== "" && paymentId !== "undefined" && (
+            {ativo === "true" && (
               <p className={styles.cancel} onClick={cancelSubscription}>
                 Cancelar plano
               </p>
@@ -298,15 +296,11 @@ export default function Perfil(props: any) {
 
             <button
               onClick={
-                paymentId !== "" && paymentId !== "undefined"
-                  ? handleSubmit
-                  : () => router.push("/Checkout")
+                ativo === "true" ? handleSubmit : () => router.push("/Checkout")
               }
               className={styles.Button}
             >
-              {paymentId !== "" && paymentId !== "undefined"
-                ? "Acessar clube"
-                : "Obter acesso"}
+              {ativo === "true" ? "Acessar clube" : "Obter acesso"}
             </button>
 
             <button onClick={handleLogout} className={styles.outButton}>
