@@ -28,7 +28,8 @@ export default function MercadoPago() {
     senha: any,
     payerId: any,
     paymentId: any,
-    nextPaymentDate: any
+    nextPaymentDate: any,
+    planID: any
   ) {
     try {
       // Faça uma consulta para encontrar o documento do usuário com base no email e senha
@@ -57,6 +58,7 @@ export default function MercadoPago() {
         payerId,
         paymentId,
         nextPaymentDate,
+        planID,
       };
 
       // Atualize o documento com os novos dados
@@ -168,13 +170,15 @@ export default function MercadoPago() {
                   "nextPaymentDate",
                   data.data.next_payment_date
                 );
+                localStorage.setItem("planID", data.planID);
 
                 inserirDadosNoFirebase(
                   emailReg,
                   senhaReg,
                   data.data.payer_id,
                   data.id,
-                  data.data.next_payment_date
+                  data.data.next_payment_date,
+                  data.planID
                 );
 
                 router.push("/");

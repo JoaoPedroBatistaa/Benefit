@@ -91,9 +91,14 @@ export default async (req: { method: string; body: { payer: any; token: any; }; 
         }
       );
 
+      const responseData = {
+        ...subscriptionResponse.data,
+        planID: planID
+      };
+
       res.status(200).json({
         message: 'Assinatura criada com sucesso!',
-        data: subscriptionResponse.data,
+        data: responseData,
       });
 
       console.log("===========================================================")
