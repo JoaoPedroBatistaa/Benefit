@@ -49,7 +49,7 @@ const Header = () => {
   const senhaFromStorage =
     typeof window !== "undefined" ? localStorage.getItem("senha") || "" : "";
 
-  async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
+  async function handleSubmit(event: any) {
     event.preventDefault();
 
     try {
@@ -198,7 +198,9 @@ const Header = () => {
             </a>
 
             {isLoggedIn ? (
-              <p id="item"></p>
+              <p id="item" onClick={handleSubmit}>
+                Acessar clube
+              </p>
             ) : (
               <Link href="/loginTrue">
                 <p id="item">Fazer login</p>
