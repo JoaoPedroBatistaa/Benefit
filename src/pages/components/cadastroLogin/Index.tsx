@@ -4,8 +4,9 @@ import Logo from "../../../../public/logoClara.svg";
 
 import styles from "../../../styles/Login.module.scss";
 
+import { getDocs } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { addDoc, collection, db } from "../../../../firebase";
+import { addDoc, collection, db, query, where } from "../../../../firebase";
 
 function CadastroLogin() {
   const router = useRouter();
@@ -93,6 +94,12 @@ function CadastroLogin() {
     }
   }
 
+  async function emailJaCadastrado(email: any) {
+    const q = query(collection(db, "Clients"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  }
+
   async function loginApi(
     accessToken: string,
     nome: string,
@@ -117,11 +124,14 @@ function CadastroLogin() {
 
       const data = await response.json();
 
-      console.log(data);
-      console.log(data.link);
-
       if (!response.ok) {
         alert(data.error);
+        return;
+      }
+
+      const jaCadastrado = await emailJaCadastrado(emailRef.current?.value);
+      if (jaCadastrado) {
+        alert("Erro: Email já cadastrado");
         return;
       }
 
@@ -129,21 +139,18 @@ function CadastroLogin() {
         const url = data.link.dado.link;
 
         await addDoc(collection(db, "Clients"), {
-          nomeCliente: nomeRef.current?.value.toString(),
-          Telefone: telefoneRef.current?.value.toString(),
-          cpf: cpfRef.current?.value.toString(),
-          email: emailRef.current?.value.toString(),
-          senha: senhaRef.current?.value.toString(),
-          payerId: payerId ? payerId.toString() : "",
-          paymentId: paymentId ? paymentId.toString() : "",
-          nextPaymentDate: nextPaymentDate ? nextPaymentDate.toString() : "",
+          nomeCliente: nomeRef.current?.value,
+          Telefone: telefoneRef.current?.value,
+          cpf: cpfRef.current?.value,
+          email: emailRef.current?.value,
+          senha: senhaRef.current?.value, // Supondo que a senha seja o accessToken
           link: url,
           Ativo: true,
         });
 
         localStorage.setItem("link", url);
-        localStorage.setItem("senha", emailRef.current?.value.toString() || "");
-        localStorage.setItem("email", senhaRef.current?.value.toString() || "");
+        localStorage.setItem("senha", email || "");
+        localStorage.setItem("email", accessToken || "");
         router.push("/Checkout");
       } else {
         console.log(
@@ -152,6 +159,7 @@ function CadastroLogin() {
       }
     } catch (error) {
       console.error("Erro ao realizar login:", error);
+      alert("Erro ao realizar login");
     }
   }
 
