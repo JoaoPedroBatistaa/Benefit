@@ -23,7 +23,7 @@ export default async (req: { method: string; body: { payer: any; token: any; }; 
             frequency: 1,
             frequency_type: "months"
           },
-          transaction_amount: 9.90, // Valor correto
+          transaction_amount: 0.90, // Valor correto
           currency_id: "BRL"
         },
         "payment_methods_allowed": {
@@ -72,7 +72,7 @@ export default async (req: { method: string; body: { payer: any; token: any; }; 
         auto_recurring: {
           frequency: 1,
           frequency_type: "months",
-          transaction_amount: 9.90,
+          transaction_amount: 0.90,
           currency_id: "BRL",
           start_date: startDate,
           end_date: endDate

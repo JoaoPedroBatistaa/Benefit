@@ -143,14 +143,14 @@ function CadastroLogin() {
           Telefone: telefoneRef.current?.value,
           cpf: cpfRef.current?.value,
           email: emailRef.current?.value,
-          senha: senhaRef.current?.value, // Supondo que a senha seja o accessToken
+          senha: senhaRef.current?.value,
           link: url,
           Ativo: true,
         });
 
         localStorage.setItem("link", url);
-        localStorage.setItem("senha", email || "");
-        localStorage.setItem("email", accessToken || "");
+        localStorage.setItem("senha", senhaRef.current?.value || "");
+        localStorage.setItem("email", emailRef.current?.value || "");
         router.push("/Checkout");
       } else {
         console.log(

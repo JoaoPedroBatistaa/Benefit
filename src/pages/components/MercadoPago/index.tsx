@@ -23,55 +23,59 @@ export default function MercadoPago() {
     emailReg = window.localStorage.getItem("email");
     senhaReg = window.localStorage.getItem("senha");
   }
+
+  async function verificarUsuarioExistente(email: string, senha: string) {
+    const q = query(
+      collection(db, "Clients"),
+      where("email", "==", email),
+      where("senha", "==", senha)
+    );
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.size === 0) {
+      console.error("Usuário não encontrado");
+      return null;
+    }
+
+    const userDoc = querySnapshot.docs[0];
+    if (!userDoc) {
+      console.error("Documento do usuário não encontrado");
+      return null;
+    }
+
+    // console.log(userDoc.id);
+    return userDoc.id;
+  }
+
   async function inserirDadosNoFirebase(
-    email: any,
-    senha: any,
+    userId: string,
     payerId: any,
     paymentId: any,
     nextPaymentDate: any,
     planID: any
   ) {
-    try {
-      // Faça uma consulta para encontrar o documento do usuário com base no email e senha
-      const q = query(
-        collection(db, "Clients"),
-        where("email", "==", email),
-        where("senha", "==", senha)
-      );
-      const querySnapshot = await getDocs(q);
+    const dados = {
+      payerId,
+      paymentId,
+      nextPaymentDate,
+      planID,
+    };
 
-      if (querySnapshot.size === 0) {
-        console.error("Usuário não encontrado");
-        return;
-      }
-
-      // Suponha que você deseje atualizar o primeiro documento encontrado na consulta
-      const userDoc = querySnapshot.docs[0];
-
-      if (!userDoc) {
-        console.error("Documento do usuário não encontrado");
-        return;
-      }
-
-      // Crie um objeto com os dados que você deseja inserir
-      const dados = {
-        payerId,
-        paymentId,
-        nextPaymentDate,
-        planID,
-      };
-
-      // Atualize o documento com os novos dados
-      await setDoc(doc(db, "Clients", userDoc.id), dados, { merge: true });
-
-      console.log("Dados inseridos no Firebase com sucesso");
-    } catch (error) {
-      console.error("Erro ao inserir dados no Firebase:", error);
-    }
+    await setDoc(doc(db, "Clients", userId), dados, { merge: true });
+    console.log("Dados inseridos no Firebase com sucesso");
   }
 
   useEffect(() => {
-    const loadSDK = async () => {
+    const iniciarProcesso = async () => {
+      if (!emailReg || !senhaReg) {
+        console.error("Email ou senha não disponíveis");
+        return;
+      }
+
+      const userID = await verificarUsuarioExistente(emailReg, senhaReg);
+      if (!userID) {
+        return;
+      }
+
       await loadMercadoPago();
       const mp = new window.MercadoPago(
         "APP_USR-417396bf-ccb9-4eab-bd11-5e50c1684ba6"
@@ -125,9 +129,8 @@ export default function MercadoPago() {
               return console.warn("Form Mounted handling error: ", error);
             console.log("Form mounted");
           },
-          onSubmit: (event: { preventDefault: () => void }) => {
+          onSubmit: (event: any) => {
             event.preventDefault();
-
             const {
               paymentMethodId: payment_method_id,
               issuerId: issuer_id,
@@ -138,8 +141,6 @@ export default function MercadoPago() {
               identificationNumber,
               identificationType,
             } = cardForm.getCardFormData();
-
-            console.log("Card Token:", token);
 
             fetch("/api/process_payment", {
               method: "POST",
@@ -173,8 +174,7 @@ export default function MercadoPago() {
                 localStorage.setItem("planID", data.planID);
 
                 inserirDadosNoFirebase(
-                  emailReg,
-                  senhaReg,
+                  userID,
                   data.data.payer_id,
                   data.id,
                   data.data.next_payment_date,
@@ -193,7 +193,6 @@ export default function MercadoPago() {
             const progressBar = document.querySelector(".progress-bar");
             if (progressBar) {
               progressBar.removeAttribute("value");
-
               return () => {
                 progressBar.setAttribute("value", "0");
               };
@@ -202,7 +201,7 @@ export default function MercadoPago() {
         },
       });
     };
-    loadSDK();
+    iniciarProcesso();
   }, []);
 
   return (
