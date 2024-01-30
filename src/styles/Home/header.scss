@@ -3,12 +3,14 @@
 .container-header {
   position: fixed;
   top: 0;
-  padding-block: 14px;
   background: #ffffff;
-  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 6px 4px 2px rgba(0, 0, 0, 0.123);
   z-index: 9999;
   height: 70px;
   width: 100%;
+
+  padding-top: 1rem;
+  padding-bottom: 0.6rem;
 
   @media only screen and (max-width: 768px) {
     display: none;
@@ -26,25 +28,48 @@
   justify-content: space-between;
   align-items: center;
   display: flex;
-  max-width: 1300px;
+  // max-width: 1300px;
   margin-inline: auto;
-  padding-inline: 3rem;
+  // padding-inline: 3rem;
   padding-top: 5px;
+
+  padding-left: 15rem;
+  padding-right: 15rem;
+}
+
+@media screen and (min-width: 2100px) {
+  .content-header-desktop {
+    padding-left: 20rem;
+    padding-right: 20rem;
+  }
+}
+
+@media (max-width: 1440px) {
+  .content-header-desktop {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1440px) {
+  .content-header-desktop {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
 }
 
 .header {
   margin-inline: auto;
-  max-width: 1300px;
-  padding-inline: 4rem;
+  // max-width: 1300px;
+  // padding-inline: 4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .logo-benefit {
-  width: 171px;
-  height: 53px;
-  object-fit: cover;
+  height: 45px;
+  object-fit: contain;
 }
 
 .links-header {
@@ -54,7 +79,7 @@
 }
 
 .links-header a {
-  font-family: "Roboto";
+  font-family: "Syne", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -70,22 +95,21 @@
 }
 
 .Login {
-  width: 160px;
-  height: 45px;
-  left: 1417px;
-  top: 18px;
-  background: #08d40a;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  margin-left: 17px;
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 23px;
-  cursor: pointer;
-  color: #ffffff;
-  border: none;
+  border: 1px solid #08d40a;
+  background-color: #fff;
+  border-radius: 15px;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #08d40a;
+  padding: 0.7rem 2.5rem;
+
+  transition: background-color 0.9s ease;
+
+  &:hover {
+    background-color: #08d40a;
+    color: #fff;
+  }
 }
 
 @media (max-width: 768px) {
@@ -117,8 +141,13 @@
 
 .nav-items-desktop {
   #item {
-    color: #000000;
+    color: #404049;
     font-size: 18px;
-    font-family: "Roboto";
+    font-family: "Syne", sans-serif;
+
+    &:hover {
+      color: #08d40a;
+      cursor: pointer;
+    }
   }
 }

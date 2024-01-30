@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Perfil from "../perfil/perfil";
 
+import Head from "next/head";
+
 const Header = () => {
   const [link, setLink] = useState<string | null>(null);
 
@@ -159,6 +161,13 @@ const Header = () => {
 
   return (
     <>
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+
       <section className="container-header">
         <Perfil
           isPerfilVisible={isPerfilVisible}
@@ -202,7 +211,7 @@ const Header = () => {
                 Acessar clube
               </p>
             ) : (
-              <Link href="/loginTrue">
+              <Link href="/login">
                 <p id="item">Fazer login</p>
               </Link>
             )}
@@ -211,7 +220,7 @@ const Header = () => {
                 Meu perfil
               </button>
             ) : (
-              <Link href="/login">
+              <Link href="/register">
                 <button className="Login">Obter acesso</button>
               </Link>
             )}

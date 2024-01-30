@@ -11,7 +11,6 @@ import { addDoc, collection, db, query, where } from "../../../../firebase";
 function CadastroLogin() {
   const router = useRouter();
 
-  // REQUISIÇÃO BLOQUEADA POR ERRO DE POLÍTICA DE CORS
   const senhaRef = useRef<HTMLInputElement>(null);
   const nomeRef = useRef<HTMLInputElement>(null);
   const cpfRef = useRef<HTMLInputElement>(null);

@@ -7,6 +7,9 @@ import Perfil from "../perfil/perfil";
 
 import { useRouter } from "next/router";
 
+import Head from "next/head";
+import styles from "./styles.module.scss";
+
 const HeaderMobile = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -225,73 +228,81 @@ const HeaderMobile = () => {
 
   return (
     <>
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+
+      <div className={styles.perfilHead}>
+        <div className={styles.navToggle} onClick={() => setIsOpen(!isOpen)}>
+          <img src="/menu.svg" alt="" />
+        </div>
+
+        <Link href="/">
+          <Image className={styles.logo} src={Logo} alt="Logo-BeneFit" />
+        </Link>
+      </div>
+
+      <div className={`${styles.navBar} ${isOpen ? styles.open : ""}`}>
+        <img
+          src="/close.svg"
+          alt="Fechar"
+          className={styles.close}
+          onClick={() => setIsOpen(false)}
+        />
+
+        <div className={styles.nav}>
+          <div
+            className={styles.navItem}
+            onClick={() => router.push("/#inicio")}
+          >
+            Início
+          </div>
+          <div
+            className={styles.navItem}
+            onClick={() => router.push("/#cliente")}
+          >
+            Faça parte
+          </div>
+          <div
+            className={styles.navItem}
+            onClick={() => router.push("/#contato")}
+          >
+            Contato
+          </div>
+
+          {isLoggedIn ? (
+            <div className={styles.navItem} onClick={handleSubmit}>
+              Acessar clube
+            </div>
+          ) : (
+            <Link href="/login">
+              <div className={styles.navItem}>Fazer login</div>
+            </Link>
+          )}
+        </div>
+
+        {isLoggedIn ? (
+          <button
+            className={styles.loginButton}
+            onClick={togglePerfilVisibility}
+          >
+            Meu perfil
+          </button>
+        ) : (
+          <Link href="/login">
+            <button className={styles.loginButton}>Obter acesso</button>
+          </Link>
+        )}
+      </div>
+
       <Perfil
         isPerfilVisible={isPerfilVisible}
         onClosePerfil={handleClosePerfil}
         onLogoutPerfil={handleLogoutPerfil}
-      ></Perfil>
-      <div className="Navbar">
-        <Link href="/">
-          <Image
-            className="logo-benefit-header"
-            src={Logo}
-            alt="Logo-BeneFit"
-          />
-        </Link>
-        <div className={`nav-items ${isOpen && "open"}`}>
-          <a
-            id="item"
-            onClick={() => {
-              router.push("/#inicio");
-            }}
-          >
-            Início
-          </a>
-
-          <a
-            id="item"
-            onClick={() => {
-              router.push("/#cliente");
-            }}
-          >
-            Faça parte
-          </a>
-
-          <a
-            id="item"
-            onClick={() => {
-              router.push("/#contato");
-            }}
-          >
-            Contato
-          </a>
-
-          {isLoggedIn ? (
-            <p id="item" onClick={handleSubmit}>
-              Acessar clube
-            </p>
-          ) : (
-            <Link href="/loginTrue">
-              <p id="item">Fazer login</p>
-            </Link>
-          )}
-          {isLoggedIn ? (
-            <button className="Login" onClick={togglePerfilVisibility}>
-              Meu perfil
-            </button>
-          ) : (
-            <Link href="/login">
-              <button className="Login">Obter acesso</button>
-            </Link>
-          )}
-        </div>
-        <div
-          className={`nav-toggle ${isOpen && "open"}`}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <div className="bar"></div>
-        </div>
-      </div>
+      />
     </>
   );
 };

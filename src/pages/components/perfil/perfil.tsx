@@ -2,26 +2,23 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "./perfil.module.scss";
 
+import Head from "next/head";
+
 export default function Perfil(props: any) {
   const { isPerfilVisible, onClosePerfil, onLogoutPerfil } = props;
 
   const router = useRouter();
 
-  // scroll;
   useEffect(() => {
     if (isPerfilVisible) {
-      // Bloqueie o scroll apenas quando isPerfilVisible for true
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     } else {
-      // Restaure o scroll quando isPerfilVisible for false
       document.documentElement.style.overflow = "auto";
       document.body.style.overflow = "auto";
     }
 
-    // Função para remover o bloqueio do scroll ao desmontar o componente
     return () => {
-      // Restaure o scroll ao seu estado anterior
       document.documentElement.style.overflow = "auto";
       document.body.style.overflow = "auto";
     };
@@ -36,7 +33,6 @@ export default function Perfil(props: any) {
   const [ativo, setAtivo] = useState<string | null>(null);
 
   useEffect(() => {
-    // Verifica se o localStorage está disponível no navegador
     if (typeof window !== "undefined") {
       const currentLink = localStorage.getItem("link");
       const currentNomeCliente = localStorage.getItem("nomeCliente");
@@ -58,15 +54,12 @@ export default function Perfil(props: any) {
 
   const primeiraLetraNome = nomeCliente ? nomeCliente.charAt(0) : "";
 
-  // CANCELAR
-
   const cancelSubscription = () => {
     const userConfirmed = window.confirm(
       "Tem certeza que deseja cancelar o plano?"
     );
 
     if (userConfirmed) {
-      // O código de cancelamento do plano que você já tem vai aqui
       const paymentId =
         typeof window !== "undefined"
           ? localStorage.getItem("paymentId") || ""
@@ -101,42 +94,32 @@ export default function Perfil(props: any) {
     }
   };
 
-  // FORMATS
-
   function formatarCPF(cpf: any) {
-    // Verifica se o CPF não está vazio, não é nulo e tem pelo menos 11 dígitos
     if (!cpf || typeof cpf !== "string" || cpf.length !== 11) {
-      return cpf; // Retorna o CPF sem formatação se não tiver 11 dígitos
+      return cpf;
     }
 
-    // Continua com a formatação do CPF
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   }
 
   function formatarTelefone(telefone: any) {
-    // Verifica se o telefone não está vazio, não é nulo e é uma string
     if (!telefone || typeof telefone !== "string") {
-      return telefone; // Retorna o telefone sem formatação se não for uma string válida
+      return telefone;
     }
 
-    // Verifica se o telefone possui 10 ou 11 dígitos
     if (telefone.length === 10) {
       return telefone.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
     } else if (telefone.length === 11) {
       return telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
     } else {
-      return telefone; // Retorna o telefone sem formatação se não for 10 ou 11 dígitos
+      return telefone;
     }
   }
-
-  // logout
 
   const handleLogout = () => {
     localStorage.clear();
     onLogoutPerfil();
   };
-
-  // ACESSAR CLUBE
 
   const nomeFromStorage =
     typeof window !== "undefined"
@@ -245,6 +228,13 @@ export default function Perfil(props: any) {
 
   return (
     <>
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+
       {isPerfilVisible && (
         <div className={styles.Container}>
           <div className={styles.ContainerLeft}></div>
@@ -259,53 +249,65 @@ export default function Perfil(props: any) {
               <p className={styles.titleHeader}>Meu perfil</p>
             </div>
 
-            <div className={styles.icon}>
-              <div className={styles.perfilIcon}>
-                <p className={styles.iconLet}>{primeiraLetraNome}</p>
+            <div className={styles.content}>
+              <div className={styles.perfilHead}>
+                <div className={styles.icon}>
+                  <div className={styles.perfilIcon}>
+                    <p className={styles.iconLet}>{primeiraLetraNome}</p>
+                  </div>
+                </div>
+
+                <p className={styles.name}>{nomeCliente}</p>
+              </div>
+
+              <div className={styles.fields}>
+                <div className={styles.data}>
+                  <p className={styles.dataData}>{email}</p>
+                </div>
+
+                <div className={styles.data}>
+                  <p className={styles.dataData}>{formatarCPF(cpf)}</p>
+                </div>
+
+                <div className={styles.data}>
+                  <p className={styles.dataData}>
+                    {formatarTelefone(telefone)}
+                  </p>
+                </div>
+
+                <div className={styles.data}>
+                  <p
+                    className={styles.dataData}
+                    style={{ color: ativo === "true" ? "#08d40a" : "red" }}
+                  >
+                    {ativo === "true" ? "Ativo" : "Inativo"}
+                  </p>
+                </div>
+
+                {ativo === "true" && (
+                  <p className={styles.cancel} onClick={cancelSubscription}>
+                    Cancelar plano
+                  </p>
+                )}
+              </div>
+
+              <div className={styles.buttons}>
+                <button
+                  onClick={
+                    ativo === "true"
+                      ? handleSubmit
+                      : () => router.push("/Checkout")
+                  }
+                  className={styles.Button}
+                >
+                  {ativo === "true" ? "Acessar clube" : "Obter acesso"}
+                </button>
+
+                <button onClick={handleLogout} className={styles.outButton}>
+                  Sair
+                </button>
               </div>
             </div>
-
-            <p className={styles.name}>{nomeCliente}</p>
-
-            <div className={styles.data}>
-              <p className={styles.dataData}>{email}</p>
-            </div>
-
-            <div className={styles.data}>
-              <p className={styles.dataData}>{formatarCPF(cpf)}</p>
-            </div>
-
-            <div className={styles.data}>
-              <p className={styles.dataData}>{formatarTelefone(telefone)}</p>
-            </div>
-
-            <div className={styles.data}>
-              <p
-                className={styles.dataData}
-                style={{ color: ativo === "true" ? "#08d40a" : "red" }}
-              >
-                {ativo === "true" ? "Ativo" : "Inativo"}
-              </p>
-            </div>
-
-            {ativo === "true" && (
-              <p className={styles.cancel} onClick={cancelSubscription}>
-                Cancelar plano
-              </p>
-            )}
-
-            <button
-              onClick={
-                ativo === "true" ? handleSubmit : () => router.push("/Checkout")
-              }
-              className={styles.Button}
-            >
-              {ativo === "true" ? "Acessar clube" : "Obter acesso"}
-            </button>
-
-            <button onClick={handleLogout} className={styles.outButton}>
-              Sair
-            </button>
           </div>
         </div>
       )}

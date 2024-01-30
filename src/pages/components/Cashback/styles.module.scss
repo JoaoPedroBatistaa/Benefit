@@ -1,0 +1,235 @@
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+
+  padding-top: 12rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  padding-bottom: 12rem;
+
+  background-image: url("/cashback.png");
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-color: #ffffff;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.5rem;
+
+  width: 50%;
+}
+
+.title {
+  color: #08d40a;
+
+  font-size: 40px;
+  font-weight: 700;
+
+  font-family: "Syne", sans-serif;
+}
+
+.description {
+  color: #939393;
+
+  font-size: 24px;
+  font-weight: 500;
+
+  font-family: "Syne", sans-serif;
+
+  span {
+    color: #08d40a;
+  }
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+
+  gap: 2rem;
+
+  margin-top: 1rem;
+}
+
+.ctaButton {
+  padding: 1.2rem 5rem;
+
+  color: #08d40a;
+  font-family: "Syne", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+
+  border: 1px solid #08d40a;
+  border-radius: 20px;
+
+  box-shadow: 0px 0px 15px #00a70836;
+
+  background-color: #ffffff00;
+
+  transition: background-color 0.9s ease;
+
+  &:hover {
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+
+    background-color: #08d40a;
+    color: #ffffff;
+  }
+}
+
+.ourButton {
+  padding: 1rem 2.5rem;
+
+  color: #d1d1d1;
+  font-family: "Syne", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+
+  border: 1px solid #d1d1d1;
+  border-radius: 25px;
+
+  box-shadow: 0px 0px 10px #9494948a;
+
+  background-color: #a900d300;
+
+  &:hover {
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+.light {
+  display: none;
+}
+
+@media screen and (min-width: 2100px) {
+  .container {
+    background-image: url("/cashback.png");
+    border-right: 1px solid #000;
+    margin-right: -0.2rem;
+    animation: backgroundFadeUltra 5s infinite ease-in-out;
+
+    padding-left: 20rem;
+    padding-right: 20rem;
+  }
+}
+
+@media (max-width: 1440px) {
+  .container {
+    background-image: url("/cashback.png");
+    padding-left: 10rem;
+    padding-right: 10rem;
+    animation: backgroundFadeSimple 5s infinite ease-in-out;
+  }
+
+  .title {
+    max-width: 80%;
+  }
+
+  .leftContainer {
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1440px) {
+  .container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-top: 10rem;
+  }
+
+  .ctaButton {
+    font-size: 14px;
+  }
+
+  .ourButton {
+    font-size: 10px;
+  }
+
+  .navItem {
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding-top: 21rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-bottom: 6rem;
+    background-image: url("/cashbackMobile.png");
+    background-position: center;
+  }
+
+  .rightContainer {
+    display: none;
+  }
+
+  .leftContainer {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-top: 2rem;
+    max-width: 95%;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .buttonsContainer {
+    flex-direction: column;
+    gap: 1.5rem;
+
+    margin-top: 0.5rem;
+  }
+
+  .ctaButton {
+    font-size: 12px;
+    padding: 0.8rem 2.5rem;
+
+    border-radius: 15px;
+  }
+
+  .ourButton {
+    font-size: 12px;
+    padding: 0.8rem 2.5rem;
+  }
+}

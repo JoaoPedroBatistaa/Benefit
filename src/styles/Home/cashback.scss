@@ -4,200 +4,86 @@ $cor-texto: #000000;
 
 .baixeCash {
   width: 100%;
-  height: 612px;
   display: flex;
   background-image: url("/back-img-carrosel.png");
   max-width: 100%;
   background-repeat: no-repeat;
   background-size: cover;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 180px;
+
+  padding-left: 15rem;
+  padding-right: 15rem;
+}
+
+@media screen and (min-width: 2100px) {
+  .baixeCash {
+    padding-left: 20rem;
+    padding-right: 20rem;
+  }
+}
+
+@media (max-width: 1440px) {
+  .baixeCash {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1440px) {
+  .baixeCash {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
 }
 
 .container__descricao {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  margin-top: 20px;
-  margin-left: 0px;
 
   h2 {
-    width: 258px;
-    height: 94px;
-    left: 529px;
-    margin-top: 107px;
     margin-bottom: 24px;
     font-family: "Roboto";
     font-style: normal;
     font-weight: 600;
     font-size: 40px;
-    line-height: 47px;
     text-align: center;
     color: $cor-titulo;
     max-width: 100%;
   }
 
   p {
-    margin-bottom: 31px;
     display: inline-block;
     font-style: normal;
     font-family: "Roboto";
     font-weight: 500;
     font-size: 24px;
-    line-height: 28px;
     text-align: center;
     color: $cor-texto;
-    width: 347px;
-    height: 56px;
   }
 }
 
-.descricao__titulo {
-  position: absolute;
-  width: 258px;
-  height: 94px;
-  left: 529px;
-  top: 107px;
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 40px;
-  line-height: 47px;
-  text-align: center;
-  color: $cor-titulo;
-}
-
-.descricao__texto {
-  position: absolute;
-  width: 346337px;
-  height: 56px;
-  left: 484px;
-  top: 225px;
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 28px;
-  text-align: center;
-  color: $cor-texto;
-}
-
-.container__imagem {
-  width: 616px;
-  // padding-top: 47px;
-  max-width: 100%;
-  display: flex;
-  object-fit: cover;
-  justify-content: center;
-}
-
 .cashback__imagem {
-  width: 816px;
-  height: 612px;
-  padding-top: 47px;
+  width: 100%;
   max-width: 100%;
   display: flex;
   position: relative;
   /* adicionado */
 
   @media screen and (max-width: 1440px) {
-    width: 650px;
-    margin-left: -250px;
   }
-}
-
-.silium {
-  width: 296px;
-  height: 178px;
-  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
-  transform: rotate(7.09deg);
-  position: absolute;
-  /* adicionado */
-  top: 50%;
-  /* ajuste a posição vertical */
-  left: 50%;
-  /* centralizado na horizontal */
-  margin-top: -55px;
-  /* metade da altura da imagem do logo */
-  margin-left: 30px;
-  /* metade da largura da imagem do logo */
-  z-index: 1;
-  /* para que a imagem do logo fique em cima da imagem do notebook */
 }
 
 // Media section cashback
 @media (max-width: 768px) {
-  .silium {
-    display: none;
-  }
-
-  .cashback__imagem {
-    display: flex;
-    flex-direction: row;
-    margin-top: -80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
   .baixeCash {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 725px;
-    gap: 0px;
   }
-
-
-  #baixeApp h2 {
-    margin-top: 70px;
-    width: 226px;
-    height: 94px;
-    left: 102px;
-    top: 70px;
-
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 40px;
-    line-height: 47px;
-    text-align: center;
-
-    color: #08d40a;
-  }
-
-  #baixeApp p {
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 28px;
-    text-align: center;
-
-    color: #000000;
-  }
-
-  .notebook {
-    width: 90%;
-    height: 80%;
-    margin-left: 250px;
-    object-fit: contain;
-  }
-
 }
 
 @media (max-width: 430px) {
-  .notebook {
-    width: 90%;
-    height: 90%;
-    padding: 0;
-  }
-
-  #baixeApp {
-    height: 680px;
-  }
 }

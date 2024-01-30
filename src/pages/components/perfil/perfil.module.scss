@@ -3,17 +3,37 @@
   flex-direction: row;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .ContainerLeft {
   height: 100vh;
   width: 70vw;
 
   position: fixed;
   top: 0;
-  left: 0; /* Posiciona à esquerda */
+  left: 0;
 
-  background-color: #00000050;
+  background-color: #00000077;
 
   z-index: 99999;
+
+  animation: fadeIn 2s ease-in;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .ContainerRight {
@@ -21,22 +41,24 @@
   width: 30vw;
   position: fixed;
   top: 0;
-  right: 0; /* Posiciona à direita */
+  right: 0;
   background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 99999;
-  overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+  overflow-y: auto;
 
   padding-bottom: 3rem;
+  box-shadow: -10px 0 15px -5px rgba(0, 0, 0, 0.281);
+
+  animation: slideInFromRight 1s ease-out forwards;
 }
 
 .header {
-  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
-
   width: 100%;
   height: 70px;
+  padding-top: 1rem;
 
   display: flex;
   flex-direction: row;
@@ -45,16 +67,18 @@
 }
 
 .back {
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: 3rem;
+  margin-right: 1.5rem;
+
+  height: 1.6rem;
 
   cursor: pointer;
 }
 
 .titleHeader {
   font-size: 20px;
-  font-weight: 600;
-  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-family: "Syne", sans-serif;
 
   color: #383838;
 
@@ -62,10 +86,33 @@
   margin-bottom: 1rem;
 }
 
-.icon {
+.content {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  justify-content: space-between;
+}
+
+.perfilHead {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  gap: 1.5rem;
+
+  width: 80%;
+
   margin-top: 3rem;
+  margin-bottom: 3rem;
+  padding-left: 3.2rem;
+}
+
+.icon {
   border-radius: 10rem;
-  padding: 12px;
+  padding: 8px;
   border: 2px dashed #08d40a;
 }
 
@@ -74,47 +121,60 @@
   align-items: center;
   justify-content: center;
   background-color: #08d40b5e;
-  width: 10rem;
-  height: 10rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 10rem;
 }
 
 .iconLet {
-  font-size: 64px;
+  font-size: 24px;
   font-weight: 700;
-  font-family: "Outfit", sans-serif;
+  font-family: "Syne", sans-serif;
 
   color: #08d40a;
 }
 
 .name {
-  font-size: 20px;
-  font-weight: 600;
-  font-family: "Outfit", sans-serif;
-
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: "Syne", sans-serif;
 
   color: #08d40a;
+
+  max-width: 20rem;
+}
+
+.fields {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .data {
-  padding: 12px;
-  background-color: #fff;
-  border-radius: 1rem;
-  border: 1px solid #cacaca;
-
-  width: 80%;
-
-  margin-top: 1.5rem;
-}
-
-.dataData {
+  width: 75%;
+  padding-left: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #ffffff;
+  border-radius: 15px;
+  border: solid 1px;
+  border-color: #4040492d;
+  font-family: "Syne", sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  font-family: "Outfit", sans-serif;
+  font-weight: 400;
+  color: #cdcdcd;
 
-  color: #cacaca;
+  outline: none;
 }
 
 .cancel {
@@ -131,38 +191,48 @@
 }
 
 .Button {
-  width: 80%;
-
+  color: #08d40a;
+  font-family: "Syne", sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  width: 80%;
+  height: 3rem;
+  border-radius: 15px;
+  background-color: #ffffff;
+  border: 1px solid #08d40a;
+  cursor: pointer;
 
-  color: #fff;
-  background-color: #08d40a;
+  margin-top: 1.5rem;
 
-  border-radius: 0.5rem;
+  transition: background-color 0.9s ease;
 
-  padding: 12px;
-
-  margin-bottom: 0.8rem;
-  margin-top: 5rem;
+  &:hover {
+    background-color: #0de011;
+    color: #fff;
+  }
 }
 
 .outButton {
-  width: 80%;
-
+  color: #e20000;
+  font-family: "Syne", sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  width: 80%;
+  height: 3rem;
+  border-radius: 15px;
+  background-color: #fff;
+  margin-bottom: 66px;
+  border: 1px solid #e20000;
+  cursor: pointer;
 
-  color: #fff;
-  background-color: #d40808;
+  margin-top: 1rem;
 
-  border-radius: 0.5rem;
+  transition: background-color 0.9s ease;
 
-  padding: 12px;
-
-  margin-bottom: 5rem;
+  &:hover {
+    background-color: #e20000;
+    color: #fff;
+  }
 }
 
 .scroll-lock {
@@ -180,8 +250,13 @@
   }
 
   .perfilIcon {
-    height: 10rem;
-    width: 10rem;
+    height: 4rem;
+    width: 4rem;
+  }
+
+  .name {
+    font-size: 16px;
+    max-width: 12rem;
   }
 
   .titleHeader {

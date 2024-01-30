@@ -44,12 +44,12 @@
   min-height: 100vh;
 
   @media only screen and (min-width: 1440px) {
-    margin-right: max(0px, (100% - 1440px)/2);
+    margin-left: max(0px, (100% - 2500px)/2);
   }
 
   @media only screen and (max-width: 768px) {
     align-items: flex-start;
-    margin-top: 38px;
+    margin-top: 34px;
   }
 }
 
@@ -169,7 +169,7 @@
   font-size: 18px;
   text-decoration: underline;
   font-weight: medium;
-  color: #08d40a;
+  color: #0de011;
 }
 
 .linha {
@@ -189,7 +189,7 @@
 
 @media (max-width: 768px) {
   .Container {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .ImageContainer {
@@ -211,6 +211,7 @@
 
   .button {
     font-size: 16px;
+
     margin-top: 1.5rem;
   }
 
@@ -232,22 +233,10 @@
     }
     .button {
       width: 85%;
-
       @media only screen and (max-width: 768px) {
         width: 100%;
       }
     }
-  }
-}
-
-.logoMobilelogin {
-  object-fit: cover;
-
-  align-self: flex-start;
-  padding-left: 2.5rem;
-
-  @media only screen and (min-width: 768px) {
-    display: none;
   }
 }
 

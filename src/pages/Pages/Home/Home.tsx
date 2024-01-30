@@ -1,9 +1,8 @@
-import CarroselBanner from "../../components/CarroselBanner/Index";
-import CarrroselMobile from "../../components/CarrroselMobile/Index";
-import Banner from "../../components/banners/banners";
-import CashBack from "../../components/cashback/cashback";
+import Benefits from "../../components/Benefits";
+import Cashback from "../../components/Cashback";
+import Footer from "../../components/Footer";
+import Hero from "../../components/Hero";
 import Cliente from "../../components/cliente/cliente";
-import Footer from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import HeaderMobile from "../../components/headerMobile/Index";
 import SectionCalculadora from "../../components/sectionCalculadora/sectionCalculadora";
@@ -13,14 +12,16 @@ function Home() {
       <section>
         <Header />
         <HeaderMobile />
-        <CarroselBanner />
-        <Banner />
-        <CarrroselMobile />
+        <Hero></Hero>
+        {/* <CarroselBanner /> */}
+        {/* <Banner /> */}
+        {/* <CarrroselMobile /> */}
         <Cliente />
-        <CashBack />
+        <Benefits></Benefits>
         <SectionCalculadora />
+        <Cashback></Cashback>
         {/* <SectionApp /> */}
-        <Footer />
+        <Footer></Footer>
       </section>
     </div>
   );
