@@ -94,7 +94,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <img src="/logFooter.png" alt="" />
+          <img src="/logoEscura 2.png" alt="" />
         </div>
       </div>
     </>
