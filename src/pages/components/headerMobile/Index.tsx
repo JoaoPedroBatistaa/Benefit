@@ -10,22 +10,67 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import styles from "./styles.module.scss";
 
+import Lottie from "react-lottie";
+import animationData from "../../../../public/animation/loadBenefit.json";
+
 const HeaderMobile = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [link, setLink] = useState<string | null>(null);
+  const [ativo, setAtivo] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Monitorar mudanças no localStorage
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+  async function handleSubmit(event: React.MouseEvent<HTMLElement>) {
+    event.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/token", {
+        method: "POST",
+      });
+
+      const data = await response.json();
+      const accessToken = data.accessToken;
+
+      const encryptedNome = await encryptData(nomeFromStorage);
+      const encryptedCpf = await encryptData(cpfFromStorage);
+      const encryptedEmail = await encryptData(emailFromStorage);
+      const encryptedTelefone = await encryptData(telefoneFromStorage);
+
+      await loginApi(
+        accessToken,
+        encryptedNome,
+        encryptedCpf,
+        encryptedEmail,
+        encryptedTelefone
+      );
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Erro ao realizar o login:", error);
+    }
+  }
+
   useEffect(() => {
-    const currentLink = localStorage.getItem("link");
-    if (currentLink) {
-      setLink(currentLink);
+    if (typeof window !== "undefined") {
+      const currentAtivo = localStorage.getItem("Ativo");
+      setAtivo(currentAtivo);
+      setIsLoggedIn(true);
     }
   }, []);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const linkValue = localStorage.getItem("link");
@@ -63,34 +108,6 @@ const HeaderMobile = () => {
     typeof window !== "undefined" ? localStorage.getItem("email") || "" : "";
   const senhaFromStorage =
     typeof window !== "undefined" ? localStorage.getItem("senha") || "" : "";
-
-  async function handleSubmit(event: any) {
-    event.preventDefault();
-
-    try {
-      const response = await fetch("/api/token", {
-        method: "POST",
-      });
-
-      const data = await response.json();
-      const accessToken = data.accessToken;
-
-      const encryptedNome = await encryptData(nomeFromStorage);
-      const encryptedCpf = await encryptData(cpfFromStorage);
-      const encryptedEmail = await encryptData(emailFromStorage);
-      const encryptedTelefone = await encryptData(telefoneFromStorage);
-
-      await loginApi(
-        accessToken,
-        encryptedNome,
-        encryptedCpf,
-        encryptedEmail,
-        encryptedTelefone
-      );
-    } catch (error) {
-      console.error("Erro ao obter o access token:", error);
-    }
-  }
 
   async function encryptData(data: string) {
     try {
@@ -235,6 +252,14 @@ const HeaderMobile = () => {
         />
       </Head>
 
+      {isLoading && (
+        <div className="shadow">
+          <div className="loadingContainer">
+            <Lottie options={defaultOptions} height={128} width={128} />
+          </div>
+        </div>
+      )}
+
       <div className={styles.perfilHead}>
         <div className={styles.navToggle} onClick={() => setIsOpen(!isOpen)}>
           <img src="/menu.svg" alt="" />
@@ -274,12 +299,18 @@ const HeaderMobile = () => {
           </div>
 
           {isLoggedIn ? (
-            <div className={styles.navItem} onClick={handleSubmit}>
-              Acessar clube
-            </div>
+            ativo === "true" ? (
+              <p className={styles.navItem} onClick={handleSubmit}>
+                Acessar clube
+              </p>
+            ) : (
+              <Link href="/register">
+                <p className={styles.navItem}>Obter acesso</p>
+              </Link>
+            )
           ) : (
             <Link href="/login">
-              <div className={styles.navItem}>Fazer login</div>
+              <p className={styles.navItem}>Fazer login</p>
             </Link>
           )}
         </div>

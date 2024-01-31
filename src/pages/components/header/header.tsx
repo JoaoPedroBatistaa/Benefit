@@ -9,24 +9,22 @@ import Perfil from "../perfil/perfil";
 
 import Head from "next/head";
 
+import Lottie from "react-lottie";
+import animationData from "../../../../public/animation/loadBenefit.json";
+
 const Header = () => {
   const [link, setLink] = useState<string | null>(null);
 
   const router = useRouter();
 
-  // Monitorar mudanças no localStorage
-  useEffect(() => {
-    const currentLink = localStorage.getItem("link");
-    if (currentLink) {
-      setLink(currentLink);
-    }
-  }, []);
+  const [ativo, setAtivo] = useState<string | null>(null);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const linkValue = localStorage.getItem("link");
-    if (linkValue) {
+    if (typeof window !== "undefined") {
+      const currentAtivo = localStorage.getItem("Ativo");
+      setAtivo(currentAtivo);
       setIsLoggedIn(true);
     }
   }, []);
@@ -51,8 +49,20 @@ const Header = () => {
   const senhaFromStorage =
     typeof window !== "undefined" ? localStorage.getItem("senha") || "" : "";
 
-  async function handleSubmit(event: any) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+  async function handleSubmit(event: React.MouseEvent<HTMLElement>) {
     event.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/token", {
@@ -74,8 +84,11 @@ const Header = () => {
         encryptedEmail,
         encryptedTelefone
       );
+
+      setIsLoading(false);
     } catch (error) {
-      console.error("Erro ao obter o access token:", error);
+      setIsLoading(false);
+      console.error("Erro ao realizar o login:", error);
     }
   }
 
@@ -169,6 +182,14 @@ const Header = () => {
       </Head>
 
       <section className="container-header">
+        {isLoading && (
+          <div className="shadow">
+            <div className="loadingContainer">
+              <Lottie options={defaultOptions} height={128} width={128} />
+            </div>
+          </div>
+        )}
+
         <Perfil
           isPerfilVisible={isPerfilVisible}
           onClosePerfil={handleClosePerfil}
@@ -207,9 +228,15 @@ const Header = () => {
             </a>
 
             {isLoggedIn ? (
-              <p id="item" onClick={handleSubmit}>
-                Acessar clube
-              </p>
+              ativo === "true" ? (
+                <p id="item" onClick={handleSubmit}>
+                  Acessar clube
+                </p>
+              ) : (
+                <Link href="/register">
+                  <p id="item">Obter acesso</p>
+                </Link>
+              )
             ) : (
               <Link href="/login">
                 <p id="item">Fazer login</p>

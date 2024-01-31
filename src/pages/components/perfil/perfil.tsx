@@ -4,10 +4,22 @@ import styles from "./perfil.module.scss";
 
 import Head from "next/head";
 
+import Lottie from "react-lottie";
+import animationData from "../../../../public/animation/loadBenefit.json";
+
 export default function Perfil(props: any) {
   const { isPerfilVisible, onClosePerfil, onLogoutPerfil } = props;
 
   const router = useRouter();
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
     if (isPerfilVisible) {
@@ -134,8 +146,11 @@ export default function Perfil(props: any) {
   const senhaFromStorage =
     typeof window !== "undefined" ? localStorage.getItem("senha") || "" : "";
 
+  const [isLoading, setIsLoading] = useState(false);
+
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/token", {
@@ -157,8 +172,11 @@ export default function Perfil(props: any) {
         encryptedEmail,
         encryptedTelefone
       );
+
+      setIsLoading(false);
     } catch (error) {
-      console.error("Erro ao obter o access token:", error);
+      setIsLoading(false);
+      console.error("Erro ao realizar o login:", error);
     }
   }
 
@@ -237,6 +255,14 @@ export default function Perfil(props: any) {
 
       {isPerfilVisible && (
         <div className={styles.Container}>
+          {isLoading && (
+            <div className={styles.shadow}>
+              <div className={styles.loadingContainer}>
+                <Lottie options={defaultOptions} height={128} width={128} />
+              </div>
+            </div>
+          )}
+
           <div className={styles.ContainerLeft}></div>
           <div className={styles.ContainerRight}>
             <div className={styles.header}>
@@ -296,7 +322,7 @@ export default function Perfil(props: any) {
                   onClick={
                     ativo === "true"
                       ? handleSubmit
-                      : () => router.push("/Checkout")
+                      : () => router.push("/register")
                   }
                   className={styles.Button}
                 >

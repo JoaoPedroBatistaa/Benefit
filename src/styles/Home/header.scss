@@ -17,6 +17,33 @@
   }
 }
 
+.shadow {
+  width: 105vw;
+  height: 105vh;
+
+  position: absolute;
+
+  background-color: #00000056;
+  z-index: 99999999999999;
+
+  margin-top: -2rem;
+}
+
+@media (max-width: 768px) {
+  .shadow {
+    margin-top: 0;
+    height: 110vh;
+  }
+}
+
+.loadingContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999999999999;
+}
+
 .nav-items-desktop {
   display: flex;
   justify-content: center;
