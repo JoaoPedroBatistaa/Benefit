@@ -159,6 +159,10 @@
 
   .image-wrapper {
     background-image: url("/mulherMobile.png");
+    background-attachment: scroll;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
   }
 
   .container__cliente {
