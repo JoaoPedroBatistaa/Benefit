@@ -17,7 +17,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [telefone, setTelefone] = useState("");
 
   const [contaCriada, setContaCriada] = useState(false);
   const [mercadoPagoLink, setMercadoPagoLink] = useState("");
@@ -40,6 +40,40 @@ export default function Register() {
     return cpf;
   }
 
+  const formatarTelefone = (telefone: string): string => {
+    telefone = telefone.replace(/\D/g, "");
+
+    if (telefone.length <= 10) {
+      telefone = telefone.replace(
+        /(\d{2})(\d{0,4})?(\d{0,4})/,
+        (
+          _match: string,
+          g1: string,
+          g2: string = "",
+          g3: string = ""
+        ): string => {
+          if (g3) {
+            return `(${g1}) ${g2}-${g3}`;
+          } else if (g2) {
+            return `(${g1}) ${g2}`;
+          } else {
+            return `(${g1}`;
+          }
+        }
+      );
+    } else {
+      telefone = telefone.substring(0, 11);
+      telefone = telefone.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+    }
+
+    return telefone;
+  };
+
+  const handleTelefoneChange = (e: any) => {
+    const valorFormatado = formatarTelefone(e.target.value);
+    setTelefone(valorFormatado);
+  };
+
   const handleButtonClick = () => {
     if (contaCriada) {
       window.location.href = mercadoPagoLink;
@@ -49,19 +83,6 @@ export default function Register() {
   };
 
   async function handleRegisterClick() {
-    if (senha !== confirmPassword) {
-      toast.error("As senhas não coincidem", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    }
-
     const jaCadastrado = await emailJaCadastrado(email);
     if (jaCadastrado) {
       toast.error("Erro: Email já cadastrado", {
@@ -76,12 +97,15 @@ export default function Register() {
       return;
     }
 
+    const telefoneNumeros = telefone.replace(/\D/g, "");
+
     await addDoc(collection(db, "Clients"), {
       nomeCliente: nome,
       cpf: cpf,
       email: email,
       senha: senha,
       Ativo: true,
+      Telefone: telefoneNumeros,
     });
 
     toast.success("Usuário cadastrado com sucesso!", {
@@ -150,21 +174,21 @@ export default function Register() {
               disabled={contaCriada}
             />
 
+            <p className={styles.label}>Telefone</p>
+            <input
+              className={styles.field}
+              type="text"
+              value={telefone}
+              onChange={handleTelefoneChange}
+              disabled={contaCriada}
+            />
+
             <p className={styles.label}>Senha</p>
             <input
               className={styles.field}
               type="password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
-              disabled={contaCriada}
-            />
-
-            <p className={styles.label}>Confirmar Senha</p>
-            <input
-              className={styles.field}
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={contaCriada}
             />
 
