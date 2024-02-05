@@ -66,7 +66,11 @@ const HeaderMobile = () => {
     if (typeof window !== "undefined") {
       const currentAtivo = localStorage.getItem("Ativo");
       setAtivo(currentAtivo);
-      setIsLoggedIn(true);
+      if (currentAtivo) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
     }
   }, []);
 
