@@ -237,7 +237,7 @@ const Header = () => {
                   Acessar clube
                 </p>
               ) : (
-                <Link href="/register">
+                <Link href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c9380848d30419b018d332708e5023f">
                   <p id="item">Obter acesso</p>
                 </Link>
               )

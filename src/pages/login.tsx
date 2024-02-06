@@ -73,7 +73,6 @@ export default function Login() {
       setUserId(user.id);
 
       localStorage.setItem("userId", user.id);
-      localStorage.setItem("link", user.link);
       localStorage.setItem("nomeCliente", user.nomeCliente);
       localStorage.setItem("cpf", user.cpf);
       localStorage.setItem("Telefone", user.Telefone);

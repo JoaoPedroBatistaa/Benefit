@@ -7,6 +7,8 @@ import Head from "next/head";
 import Lottie from "react-lottie";
 import animationData from "../../../../public/animation/loadBenefit.json";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Perfil(props: any) {
   const { isPerfilVisible, onClosePerfil, onLogoutPerfil } = props;
 
@@ -43,18 +45,18 @@ export default function Perfil(props: any) {
   const [email, setEmail] = useState<string | null>(null);
   const [paymentId, setPaymentId] = useState<string | null>(null);
   const [ativo, setAtivo] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const currentLink = localStorage.getItem("link");
       const currentNomeCliente = localStorage.getItem("nomeCliente");
       const currentCpf = localStorage.getItem("cpf");
       const currentTelefone = localStorage.getItem("Telefone");
       const currentEmail = localStorage.getItem("email");
       const currentPaymentId = localStorage.getItem("paymentId");
       const currentAtivo = localStorage.getItem("Ativo");
+      const currentUserId = localStorage.getItem("userId");
 
-      setLink(currentLink || null);
       setNomeCliente(currentNomeCliente || null);
       setCpf(currentCpf || null);
       setTelefone(currentTelefone || null);
@@ -76,6 +78,10 @@ export default function Perfil(props: any) {
         typeof window !== "undefined"
           ? localStorage.getItem("paymentId") || ""
           : "";
+      const userId =
+        typeof window !== "undefined"
+          ? localStorage.getItem("userId") || ""
+          : "";
 
       if (!paymentId) {
         console.error("Payment ID não encontrado.");
@@ -89,6 +95,7 @@ export default function Perfil(props: any) {
         },
         body: JSON.stringify({
           paymentId,
+          userId,
         }),
       })
         .then((res) => {
@@ -98,10 +105,14 @@ export default function Perfil(props: any) {
           return res.json();
         })
         .then((data) => {
-          alert(`Assinatura cancelada com sucesso: ${data.message}`);
+          toast.success("Assinatura cancelada com sucesso!");
+          console.log("Assinatura cancelada com sucesso!");
+          handleLogout();
+          onClosePerfil();
         })
         .catch((error) => {
-          alert(`Erro ao cancelar a assinatura: ${error}`);
+          toast.error(`Erro ao cancelar a assinatura: ${error}`);
+          console.log(`Erro ao cancelar a assinatura: ${error}`);
         });
     }
   };
@@ -253,6 +264,8 @@ export default function Perfil(props: any) {
         />
       </Head>
 
+      <ToastContainer />
+
       {isPerfilVisible && (
         <div className={styles.Container}>
           {isLoading && (
@@ -322,7 +335,10 @@ export default function Perfil(props: any) {
                   onClick={
                     ativo === "true"
                       ? handleSubmit
-                      : () => router.push("/register")
+                      : () =>
+                          router.push(
+                            "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c9380848d30419b018d332708e5023f"
+                          )
                   }
                   className={styles.Button}
                 >

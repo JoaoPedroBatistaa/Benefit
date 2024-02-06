@@ -1,21 +1,20 @@
 import axios from 'axios';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
-export default async (req: { method: string; body: { paymentId: string; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { error?: string; message?: string; data?: any; }): void; new(): any; }; }; }) => {
+export default async (req: { method: string; body: { paymentId: any; userId: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { error?: string; message?: string; }): void; new(): any; }; }; }) => {
    if (req.method === 'PUT') {
-      const { paymentId } = req.body;
+      const { paymentId, userId } = req.body;
 
-      console.log("PaymentId recebido:", paymentId);
-
-      if (!paymentId) {
-         return res.status(400).json({ error: 'O paymentId é necessário.' });
+      if (!paymentId || !userId) {
+         return res.status(400).json({ error: 'O paymentId e userId são necessários.' });
       }
 
       try {
-         const cancelData = {
-            status: "cancelled"
-         };
+         const cancelData = { status: "cancelled" };
 
-         const cancelResponse = await axios.put(
+         // Cancela a assinatura
+         await axios.put(
             `https://api.mercadopago.com/preapproval/${paymentId}`,
             cancelData,
             {
@@ -26,21 +25,22 @@ export default async (req: { method: string; body: { paymentId: string; }; }, re
             }
          );
 
-         res.status(200).json({
-            message: 'Assinatura cancelada com sucesso!',
-            data: cancelResponse.data,
+         // Referência ao documento do usuário no Firestore
+         const userRef = doc(db, "Clients", userId);
+
+         // Atualiza o campo "Ativo" do usuário para false
+         await updateDoc(userRef, {
+            Ativo: false
          });
 
-         console.log("===========================================================")
-         console.log("===========================================================")
-         console.log(cancelResponse.data);
-         console.log("===========================================================")
-         console.log("===========================================================")
+         res.status(200).json({
+            message: 'Assinatura cancelada com sucesso!',
+         });
       } catch (error) {
-         console.error("Erro ao cancelar a assinatura:", error);
-         return res.status(500).json({ error: 'Ocorreu um erro ao cancelar a assinatura.' });
+         console.error("Erro ao cancelar a assinatura ou ao atualizar o usuário:", error);
+         return res.status(500).json({ error: 'Ocorreu um erro ao cancelar a assinatura ou ao atualizar o usuário.' });
       }
    } else {
       res.status(405).json({ error: 'Método não permitido' });
    }
-}
+};
