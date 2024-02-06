@@ -168,6 +168,9 @@ export default function Register() {
               onChange={(e) => setEmail(e.target.value)}
               disabled={contaCriada}
             />
+            <p className={styles.alert}>
+              * Use o mesmo email ao finalizar a assinatura...
+            </p>
 
             <p className={styles.label}>CPF</p>
             <input
