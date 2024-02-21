@@ -107,7 +107,7 @@ export default function Register() {
       cpf: cpf,
       email: email,
       senha: senha,
-      Ativo: true,
+      Ativo: false,
       Telefone: telefoneNumeros,
     });
 
