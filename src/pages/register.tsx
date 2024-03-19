@@ -8,10 +8,13 @@ import styles from "../styles/Create.module.scss";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 
+import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -22,10 +25,40 @@ export default function Register() {
   const [contaCriada, setContaCriada] = useState(false);
   const [mercadoPagoLink, setMercadoPagoLink] = useState("");
 
+  const [clienteId, setClienteId] = useState("");
+
+  const [nomeNoCartao, setNomeNoCartao] = useState("");
+  const [numeroDoCartao, setNumeroDoCartao] = useState("");
+  const [mesVencimento, setMesVencimento] = useState("");
+  const [anoVencimento, setAnoVencimento] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [cep, setCep] = useState("");
+  const [numeroEndereco, setNumeroEndereco] = useState("");
+
   async function emailJaCadastrado(email: string) {
     const q = query(collection(db, "Clients"), where("email", "==", email));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
+  }
+
+  function formatarCEP(cep: string) {
+    cep = cep.replace(/\D/g, "");
+
+    cep = cep.substring(0, 8);
+
+    cep = cep.replace(/(\d{5})(\d)/, "$1-$2");
+
+    return cep;
+  }
+
+  function formatarNumeroDoCartao(numero: string) {
+    numero = numero.replace(/\D/g, "");
+
+    numero = numero.substring(0, 16);
+
+    numero = numero.replace(/(\d{4})(\d)/g, "$1 $2");
+
+    return numero;
   }
 
   function formatarCPF(cpf: string) {
@@ -76,11 +109,51 @@ export default function Register() {
 
   const handleButtonClick = () => {
     if (contaCriada) {
-      window.location.href = mercadoPagoLink;
+      handlePayment();
     } else {
       handleRegisterClick();
     }
   };
+
+  async function criarClienteNoAsaas() {
+    const clienteData = {
+      nome,
+      email,
+      cpf,
+      telefone,
+    };
+
+    try {
+      const response = await fetch("/api/create-client", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(clienteData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao criar cliente no ASAAS");
+      }
+
+      const responseData = await response.json();
+
+      console.log("ID do cliente criado no ASAAS:", responseData.customer);
+
+      setClienteId(responseData.customer);
+    } catch (error) {
+      console.error("Erro ao criar cliente no ASAAS:", error);
+      toast.error("Erro ao finalizar o cadastro. Por favor, tente novamente.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }
 
   async function handleRegisterClick() {
     if (isLoading) return;
@@ -121,11 +194,83 @@ export default function Register() {
       progress: undefined,
     });
 
+    criarClienteNoAsaas();
+
     setContaCriada(true);
-    setMercadoPagoLink(
-      "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c9380848d30419b018d332708e5023f"
-    );
+
     setIsLoading(false);
+  }
+
+  async function handlePayment() {
+    const paymentData = {
+      billingType: "CREDIT_CARD",
+      cycle: "MONTHLY",
+      creditCard: {
+        holderName: nomeNoCartao,
+        number: numeroDoCartao.replace(/\s+/g, ""),
+        expiryMonth: mesVencimento,
+        expiryYear: anoVencimento,
+        ccv: cvv,
+      },
+      creditCardHolderInfo: {
+        name: nome,
+        email: email,
+        cpfCnpj: cpf.replace(/\D/g, ""),
+        postalCode: cep.replace("-", ""),
+        addressNumber: numeroEndereco,
+        addressComplement: null,
+        phone: telefone.replace(/\D/g, ""),
+        mobilePhone: telefone.replace(/\D/g, ""),
+      },
+      customer: clienteId,
+      nextDueDate: new Date(new Date().setDate(new Date().getDate() + 30))
+        .toISOString()
+        .split("T")[0],
+      value: 9.9,
+      description: "Benefit - Clube de Benefícios",
+      creditCardToken: "a75a1d98-c52d-4a6b-a413-71e00b193c99",
+    };
+
+    try {
+      const response = await fetch("/api/create-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao criar pagamento");
+      }
+
+      const responseData = await response.json();
+      console.log("Pagamento finalizado com sucesso:", responseData);
+
+      toast.success("Pagamento finalizado com sucesso!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      router.push("/login");
+    } catch (error) {
+      console.error("Erro ao criar pagamento:", error);
+
+      toast.error("Erro ao criar pagamento. Por favor, tente novamente.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   }
 
   return (
@@ -151,53 +296,131 @@ export default function Register() {
                 : "Preencha abaixo para criar conta"}
             </p>
 
-            <p className={styles.label}>Seu nome</p>
-            <input
-              className={styles.field}
-              type="text"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              disabled={contaCriada}
-            />
+            {!contaCriada && (
+              <>
+                <p className={styles.label}>Seu nome</p>
+                <input
+                  className={styles.field}
+                  type="text"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                />
 
-            <p className={styles.label}>Email</p>
-            <input
-              className={styles.field}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={contaCriada}
-            />
-            <p className={styles.alert}>
-              * Use o mesmo email ao finalizar a assinatura...
-            </p>
+                <p className={styles.label}>Email</p>
+                <input
+                  className={styles.field}
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
 
-            <p className={styles.label}>CPF</p>
-            <input
-              className={styles.field}
-              type="text"
-              value={cpf}
-              onChange={(e) => setCpf(formatarCPF(e.target.value))}
-              disabled={contaCriada}
-            />
+                <p className={styles.label}>CPF</p>
+                <input
+                  className={styles.field}
+                  type="text"
+                  value={cpf}
+                  onChange={(e) => setCpf(formatarCPF(e.target.value))}
+                />
 
-            <p className={styles.label}>Telefone</p>
-            <input
-              className={styles.field}
-              type="text"
-              value={telefone}
-              onChange={handleTelefoneChange}
-              disabled={contaCriada}
-            />
+                <p className={styles.label}>Telefone</p>
+                <input
+                  className={styles.field}
+                  type="text"
+                  value={telefone}
+                  onChange={handleTelefoneChange}
+                />
 
-            <p className={styles.label}>Senha</p>
-            <input
-              className={styles.field}
-              type="password"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              disabled={contaCriada}
-            />
+                <p className={styles.label}>Senha</p>
+                <input
+                  className={styles.field}
+                  type="password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                />
+              </>
+            )}
+
+            {contaCriada && (
+              <>
+                <p className={styles.label}>Nome no cartão</p>
+                <input
+                  className={styles.field}
+                  type="text"
+                  value={nomeNoCartao}
+                  onChange={(e) => setNomeNoCartao(e.target.value)}
+                />
+
+                <p className={styles.label}>Número do cartão</p>
+                <input
+                  className={styles.field}
+                  type="text"
+                  value={numeroDoCartao}
+                  onChange={(e) =>
+                    setNumeroDoCartao(formatarNumeroDoCartao(e.target.value))
+                  }
+                />
+
+                <div className={styles.fields}>
+                  <div>
+                    <p className={styles.label}>Mês de vencimento</p>
+                    <input
+                      className={styles.fieldS}
+                      type="number"
+                      // @ts-ignore
+                      maxLength="2"
+                      value={mesVencimento}
+                      onChange={(e) => setMesVencimento(e.target.value)}
+                      placeholder="00"
+                    />
+                  </div>
+
+                  <div>
+                    <p className={styles.label}>Ano de vencimento</p>
+                    <input
+                      className={styles.fieldS}
+                      type="number"
+                      // @ts-ignore
+                      maxLength="4"
+                      value={anoVencimento}
+                      onChange={(e) => setAnoVencimento(e.target.value)}
+                      placeholder="0000"
+                    />
+                  </div>
+                </div>
+
+                <p className={styles.label}>CVV</p>
+                <input
+                  className={styles.field}
+                  type="number"
+                  // @ts-ignore
+                  maxLength="3"
+                  value={cvv}
+                  onChange={(e) => setCvv(e.target.value)}
+                />
+
+                <div className={styles.fields}>
+                  <div>
+                    <p className={styles.label}>Número do endereço</p>
+                    <input
+                      className={styles.fieldS}
+                      type="number"
+                      value={numeroEndereco}
+                      onChange={(e) => setNumeroEndereco(e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <p className={styles.label}>CEP</p>
+                    <input
+                      className={styles.fieldS}
+                      type="text"
+                      value={cep}
+                      onChange={(e) => setCep(formatarCEP(e.target.value))}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
 
             <button
               className={styles.button}

@@ -130,8 +130,32 @@
   margin-bottom: 72px;
 }
 
+.fields {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+}
+
 .field {
   width: 27.6em;
+  padding-left: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #ffffff;
+  border-radius: 15px;
+  border: solid 1px;
+  border-color: #4040492d;
+  font-family: "Syne", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #404049;
+
+  outline: none;
+}
+
+.fieldS {
+  width: 12.2em;
   padding-left: 1rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -202,6 +226,14 @@
     flex-direction: column-reverse;
   }
 
+  .fieldS {
+    width: 7rem;
+  }
+
+  .field {
+    width: 90%;
+  }
+
   .ImageContainer {
     width: 100%;
     height: 22rem;
@@ -232,14 +264,6 @@
     .Login {
       margin: 0 auto;
       width: 80%;
-
-      input {
-        width: 85%;
-
-        @media only screen and (max-width: 768px) {
-          width: 90%;
-        }
-      }
     }
     .button {
       width: 85%;
