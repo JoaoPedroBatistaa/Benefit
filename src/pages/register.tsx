@@ -115,46 +115,6 @@ export default function Register() {
     }
   };
 
-  async function criarClienteNoAsaas() {
-    const clienteData = {
-      nome,
-      email,
-      cpf,
-      telefone,
-    };
-
-    try {
-      const response = await fetch("/api/create-client", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(clienteData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Falha ao criar cliente no ASAAS");
-      }
-
-      const responseData = await response.json();
-
-      console.log("ID do cliente criado no ASAAS:", responseData.customer);
-
-      setClienteId(responseData.customer);
-    } catch (error) {
-      console.error("Erro ao criar cliente no ASAAS:", error);
-      toast.error("Erro ao finalizar o cadastro. Por favor, tente novamente.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  }
-
   async function handleRegisterClick() {
     if (isLoading) return;
     setIsLoading(true);
@@ -170,35 +130,76 @@ export default function Register() {
         draggable: true,
         progress: undefined,
       });
+      setIsLoading(false);
       return;
     }
 
-    const telefoneNumeros = telefone.replace(/\D/g, "");
+    try {
+      const clienteId = await criarClienteNoAsaas();
+      const telefoneNumeros = telefone.replace(/\D/g, "");
 
-    await addDoc(collection(db, "Clients"), {
-      nomeCliente: nome,
-      cpf: cpf,
-      email: email,
-      senha: senha,
-      Ativo: false,
-      Telefone: telefoneNumeros,
+      await addDoc(collection(db, "Clients"), {
+        nomeCliente: nome,
+        cpf: cpf,
+        email: email,
+        senha: senha,
+        Ativo: false,
+        Telefone: telefoneNumeros,
+        ClienteId: clienteId,
+      });
+
+      toast.success("Usuário cadastrado com sucesso!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setContaCriada(true);
+    } catch (error) {
+      console.error("Erro ao criar o usuário:", error);
+      toast.error("Erro ao finalizar o cadastro. Por favor, tente novamente.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function criarClienteNoAsaas() {
+    const clienteData = {
+      nome,
+      email,
+      cpf,
+      telefone,
+    };
+
+    const response = await fetch("/api/create-client", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(clienteData),
     });
 
-    toast.success("Usuário cadastrado com sucesso!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    if (!response.ok) {
+      throw new Error("Falha ao criar cliente no ASAAS");
+    }
 
-    criarClienteNoAsaas();
+    const responseData = await response.json();
+    console.log("ID do cliente criado no ASAAS:", responseData.customer);
+    setClienteId(responseData.customer);
 
-    setContaCriada(true);
-
-    setIsLoading(false);
+    return responseData.customer;
   }
 
   async function handlePayment() {
