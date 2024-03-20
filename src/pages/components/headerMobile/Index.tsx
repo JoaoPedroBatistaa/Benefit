@@ -308,7 +308,13 @@ const HeaderMobile = () => {
                 Acessar clube
               </p>
             ) : (
-              <Link href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c9380848d30419b018d332708e5023f">
+              <Link
+                href={{
+                  pathname: "/register",
+                  query: { contaCriada: "true" },
+                }}
+              >
+                {" "}
                 <p className={styles.navItem}>Obter acesso</p>
               </Link>
             )

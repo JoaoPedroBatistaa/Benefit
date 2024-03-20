@@ -1,11 +1,19 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Head from "next/head";
 
 import styles from "../styles/Create.module.scss";
 
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
 import { useRouter } from "next/router";
@@ -34,6 +42,23 @@ export default function Register() {
   const [cvv, setCvv] = useState("");
   const [cep, setCep] = useState("");
   const [numeroEndereco, setNumeroEndereco] = useState("");
+
+  useEffect(() => {
+    if (router.query.contaCriada === "true") {
+      setContaCriada(true);
+      const nomeLocalStorage = localStorage.getItem("nomeCliente");
+      const cpfLocalStorage = localStorage.getItem("cpf");
+      const emailLocalStorage = localStorage.getItem("email");
+      const telefoneLocalStorage = localStorage.getItem("Telefone");
+      const clienteLocalStorage = localStorage.getItem("ClienteId");
+
+      if (nomeLocalStorage) setNome(nomeLocalStorage);
+      if (cpfLocalStorage) setCpf(cpfLocalStorage);
+      if (emailLocalStorage) setEmail(emailLocalStorage);
+      if (telefoneLocalStorage) setTelefone(telefoneLocalStorage);
+      if (clienteLocalStorage) setClienteId(clienteLocalStorage);
+    }
+  }, [router.query]);
 
   async function emailJaCadastrado(email: string) {
     const q = query(collection(db, "Clients"), where("email", "==", email));
@@ -202,6 +227,33 @@ export default function Register() {
     return responseData.customer;
   }
 
+  async function updatePaymentIdForUser(email: unknown, paymentId: any) {
+    try {
+      const usersRef = collection(db, "Clients");
+      const q = query(usersRef, where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach(async (document) => {
+          const userDocRef = doc(db, "Clients", document.id);
+          await updateDoc(userDocRef, { paymentId: paymentId });
+        });
+        console.log(
+          "ID do pagamento atualizado com sucesso para o usuário:",
+          email
+        );
+      } else {
+        console.log("Usuário não encontrado:", email);
+      }
+    } catch (error) {
+      console.error(
+        "Erro ao atualizar ID do pagamento para o usuário:",
+        email,
+        error
+      );
+    }
+  }
+
   async function handlePayment() {
     const paymentData = {
       billingType: "CREDIT_CARD",
@@ -248,17 +300,19 @@ export default function Register() {
       const responseData = await response.json();
       console.log("Pagamento finalizado com sucesso:", responseData);
 
+      const paymentId = responseData.id;
+      await updatePaymentIdForUser(email, paymentId);
+
       toast.success("Pagamento finalizado com sucesso!", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        onClose: () => router.push("/login"),
       });
-
-      router.push("/login");
     } catch (error) {
       console.error("Erro ao criar pagamento:", error);
 

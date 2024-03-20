@@ -323,11 +323,11 @@ export default function Perfil(props: any) {
                   </p>
                 </div>
 
-                {ativo === "true" && (
+                {/* {ativo === "true" && (
                   <p className={styles.cancel} onClick={cancelSubscription}>
                     Cancelar plano
                   </p>
-                )}
+                )} */}
               </div>
 
               <div className={styles.buttons}>
@@ -335,10 +335,7 @@ export default function Perfil(props: any) {
                   onClick={
                     ativo === "true"
                       ? handleSubmit
-                      : () =>
-                          router.push(
-                            "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c9380848d30419b018d332708e5023f"
-                          )
+                      : () => router.push("/register?contaCriada=true")
                   }
                   className={styles.Button}
                 >
