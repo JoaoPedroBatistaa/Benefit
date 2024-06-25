@@ -14,7 +14,7 @@ function sectionCalculadora() {
         <div className="container-calculadora">
           <div className="text">
             <h2>
-              Adicione grátis a extensão do Clube Benefit e nunca perca um
+              Adicione grátis a extensão do Clube Poupy e nunca perca um
               desconto! Seu próximo grande achado está a um clique de distância.
             </h2>
           </div>

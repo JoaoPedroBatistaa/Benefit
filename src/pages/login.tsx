@@ -124,12 +124,12 @@ export default function Login() {
 
       <div className={styles.Container}>
         <div className={styles.ImageContainer}>
-          <img className={styles.logo} src="/logo.svg" alt="logo" />
+          <img className={styles.logo} src="/logoBenefit.png" alt="logo" />
           <div className={styles.Social}>
-            <Link href="https://www.facebook.com/share/7dmxQuH9X6u3Sqh9/?mibextid=WC7FNe">
+            <Link href="https://www.facebook.com/profile.php?id=61560889181740&mibextid=LQQJ4d">
               <img src="facebook.svg" alt="facebook" />
             </Link>
-            <Link href="https://www.instagram.com/clubebenefit?igsh=MThoM2FwcjN5ODA3NA==">
+            <Link href="https://www.instagram.com/clubepoupy?igsh=N2FrajBpeW1heTJo">
               <img src="insatgram.svg" alt="instagram" />
             </Link>
           </div>

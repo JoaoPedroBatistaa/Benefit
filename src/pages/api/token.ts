@@ -3,8 +3,8 @@ import qs from 'qs';
 
 export default async function handler(req: any, res: any) {
   const data = {
-    client_id: "5483038437-7e5PxK3L0dYgLCuF!xfb4jp8v%Ud3g#u56ZquehsGtut$adT5HyAMdW$5VJQbXpb8S1!Y*R3E.benefit.com.br",
-    secret_id: "82500-AAJaz0z04HIDT0B4bR4S1JckG9QR1J388Z6Ztb*qz6AhQ2pqeX2UO4cn$Sgcbb60ieuXVm374C",
+    client_id: "9532239410-7mcUpqGbrWnd43$n2tfmI4O4QXxC8UXhonWVMNzq4VEzye9vxs$8QjB2uxJhgSh6mD8dlw.clubepoupy.com.br",
+    secret_id: "15365-kdihPVdnM5!F%S2eqZ9#heA6ehin%!hjfmcQqXTCm1GmRqQ6fhM$#v#XWbS734RwUuBkjr*947",
     audience: "web",
     grant_type: "client_credentials",
     scope: "login:api"
@@ -16,7 +16,7 @@ export default async function handler(req: any, res: any) {
     data: qs.stringify(data),
     headers: {
       'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-      'Referer': 'https://clubbenefit.com.br'
+      'Referer': 'https://clubepoupy.com.br'
     }
   })
     .then((response) => {

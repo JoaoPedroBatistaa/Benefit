@@ -7,11 +7,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
    if (req.method === 'POST') {
       try {
          console.log("Enviando dados para ASAAS", req.body);
-         const { data } = await axios.post('https://sandbox.asaas.com/api/v3/subscriptions/', req.body, {
+         const { data } = await axios.post('https://asaas.com/api/v3/subscriptions/', req.body, {
             headers: {
                'accept': 'application/json',
                'content-type': 'application/json',
-               'access_token': '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwNzY2MzE6OiRhYWNoX2M5MzZkNzU3LTNjM2MtNDg1MC05OTlhLTVjMmZkNjM1ODFjZg==',
+               'access_token': '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDA0NDkyOTc6OiRhYWNoXzVhMmM1ZTJhLTE4ZGItNDA1My1hNWNkLTFlMWRlODAzYWM3Yg==',
             },
          });
          console.log("Resposta do ASAAS", data);

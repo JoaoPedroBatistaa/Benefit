@@ -21,7 +21,7 @@ export default async function handler(
    console.log("Recebendo requisição com:", { nome, email, cpf, telefone }); // Log de entrada
 
    try {
-      const asaasResponse = await axios.post('https://sandbox.asaas.com/api/v3/customers', {
+      const asaasResponse = await axios.post('https://asaas.com/api/v3/customers', {
          name: nome,
          email: email,
          cpfCnpj: cpf,
@@ -32,7 +32,7 @@ export default async function handler(
          headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'access_token': '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwNzY2MzE6OiRhYWNoX2M5MzZkNzU3LTNjM2MtNDg1MC05OTlhLTVjMmZkNjM1ODFjZg==' // Certifique-se de substituir este valor
+            'access_token': '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDA0NDkyOTc6OiRhYWNoXzVhMmM1ZTJhLTE4ZGItNDA1My1hNWNkLTFlMWRlODAzYWM3Yg==' // Certifique-se de substituir este valor
          }
       });
 

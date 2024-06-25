@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-import Logo from "../../../../public/logoClara.svg";
 
 import { useRouter } from "next/router";
 
@@ -201,7 +199,11 @@ const Header = () => {
         ></Perfil>
         <div className="content-header-desktop">
           <Link href="/">
-            <Image className="logo-benefit" src={Logo} alt="Logo-BeneFit" />
+            <img
+              className="logo-benefit"
+              src="/logoBenefit.png"
+              alt="Logo-BeneFit"
+            />
           </Link>
           <div className="nav-items-desktop">
             <a

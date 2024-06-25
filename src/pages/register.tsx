@@ -1,10 +1,3 @@
-import Link from "next/link";
-import { useEffect, useState } from "react";
-
-import Head from "next/head";
-
-import styles from "../styles/Create.module.scss";
-
 import {
   addDoc,
   collection,
@@ -14,27 +7,26 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../firebase";
-
+import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { db } from "../../firebase";
+import styles from "../styles/Create.module.scss";
 
 export default function Register() {
   const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
   const [telefone, setTelefone] = useState("");
-
   const [contaCriada, setContaCriada] = useState(false);
   const [mercadoPagoLink, setMercadoPagoLink] = useState("");
-
   const [clienteId, setClienteId] = useState("");
-
   const [nomeNoCartao, setNomeNoCartao] = useState("");
   const [numeroDoCartao, setNumeroDoCartao] = useState("");
   const [mesVencimento, setMesVencimento] = useState("");
@@ -60,7 +52,7 @@ export default function Register() {
     }
   }, [router.query]);
 
-  async function emailJaCadastrado(email: string) {
+  async function emailJaCadastrado(email: unknown) {
     const q = query(collection(db, "Clients"), where("email", "==", email));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
@@ -68,48 +60,33 @@ export default function Register() {
 
   function formatarCEP(cep: string) {
     cep = cep.replace(/\D/g, "");
-
     cep = cep.substring(0, 8);
-
     cep = cep.replace(/(\d{5})(\d)/, "$1-$2");
-
     return cep;
   }
 
   function formatarNumeroDoCartao(numero: string) {
     numero = numero.replace(/\D/g, "");
-
     numero = numero.substring(0, 16);
-
     numero = numero.replace(/(\d{4})(\d)/g, "$1 $2");
-
     return numero;
   }
 
   function formatarCPF(cpf: string) {
     cpf = cpf.replace(/\D/g, "");
-
     cpf = cpf.substring(0, 11);
-
     cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
     cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
     cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-
     return cpf;
   }
 
-  const formatarTelefone = (telefone: string): string => {
+  const formatarTelefone = (telefone: string) => {
     telefone = telefone.replace(/\D/g, "");
-
     if (telefone.length <= 10) {
       telefone = telefone.replace(
         /(\d{2})(\d{0,4})?(\d{0,4})/,
-        (
-          _match: string,
-          g1: string,
-          g2: string = "",
-          g3: string = ""
-        ): string => {
+        (_match: any, g1: any, g2 = "", g3 = "") => {
           if (g3) {
             return `(${g1}) ${g2}-${g3}`;
           } else if (g2) {
@@ -123,11 +100,10 @@ export default function Register() {
       telefone = telefone.substring(0, 11);
       telefone = telefone.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
     }
-
     return telefone;
   };
 
-  const handleTelefoneChange = (e: any) => {
+  const handleTelefoneChange = (e: { target: { value: any } }) => {
     const valorFormatado = formatarTelefone(e.target.value);
     setTelefone(valorFormatado);
   };
@@ -497,12 +473,12 @@ export default function Register() {
           </div>
         </div>
         <div className={styles.ImageContainer}>
-          <img className={styles.logo} src="/logo.svg" alt="logo" />
+          <img className={styles.logo} src="/logoBenefit.png" alt="logo" />
           <div className={styles.Social}>
-            <Link href="https://www.facebook.com/share/7dmxQuH9X6u3Sqh9/?mibextid=WC7FNe">
+            <Link href="https://www.facebook.com/profile.php?id=61560889181740&mibextid=LQQJ4d">
               <img src="facebook.svg" alt="facebook" />
             </Link>
-            <Link href="https://www.instagram.com/clubebenefit?igsh=MThoM2FwcjN5ODA3NA==">
+            <Link href="https://www.instagram.com/clubepoupy?igsh=N2FrajBpeW1heTJo">
               <img src="insatgram.svg" alt="instagram" />
             </Link>
           </div>

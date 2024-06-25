@@ -50,7 +50,7 @@ export default function Footer() {
             <p className={styles.description}>(61) 99354-6881</p>
           </div>
 
-          <img src="/logoEscura 2.png" alt="" />
+          <img src="/logoClaraNova.png" alt="" />
         </div>
 
         <div className={styles.footerMobile}>
@@ -88,13 +88,15 @@ export default function Footer() {
 
             <div className={styles.rightInfo}>
               <p className={styles.desc}>E-mail</p>
-              <p className={styles.description}>clubebenefit@gmail.com</p>
+              <p className={styles.description}>
+                atendimento@clubepoupy.com.br
+              </p>
               <p className={styles.desc}>WhatsApp</p>
               <p className={styles.description}>(61) 99354-6881</p>
             </div>
           </div>
 
-          <img src="/logoEscura 2.png" alt="" />
+          <img src="/logoClaraNova.png" alt="" />
         </div>
       </div>
     </>

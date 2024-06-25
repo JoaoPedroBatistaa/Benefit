@@ -26,8 +26,8 @@ const Cliente = () => {
             </div>
           </div>
           <h3>
-            Descubra o poder da economia inteligente! Junte-se ao Clube Benefit
-            e acesse uma seleção exclusiva de ofertas e descontos por apenas R$
+            Descubra o poder da economia inteligente! Junte-se ao Clube Poupy e
+            acesse uma seleção exclusiva de ofertas e descontos por apenas R$
             9,90. <br />
             <br /> Economize com estilo, melhore seu dia-a-dia e faça parte de
             uma comunidade que valoriza mais por menos. Sua jornada para uma

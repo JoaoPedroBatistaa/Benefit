@@ -7,13 +7,13 @@ export default function Hero() {
       <div className={styles.container} id="Home">
         <div className={styles.leftContainer}>
           <p className={styles.title}>
-            Seja Membro do Clube Benefit e Economize todos os dias!
+            Seja Membro do Clube Poupy e Economize todos os dias!
           </p>
 
           <p className={styles.description}>
             Junte-se a <span>milhares de pessoas</span> que estão{" "}
-            <span>economizando</span> em suas compras diárias com o Clube
-            Benefit. Por apenas R$9,90 por mês, tenha acesso a{" "}
+            <span>economizando</span> em suas compras diárias com o Clube Poupy.
+            Por apenas R$9,90 por mês, tenha acesso a{" "}
             <span>descontos exclusivos</span> em todo o Brasil.
           </p>
 

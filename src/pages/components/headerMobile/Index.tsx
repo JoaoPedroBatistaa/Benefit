@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Logo from "../../../../public/logoClara.svg";
 
 import Perfil from "../perfil/perfil";
 
@@ -270,7 +268,11 @@ const HeaderMobile = () => {
         </div>
 
         <Link href="/">
-          <Image className={styles.logo} src={Logo} alt="Logo-BeneFit" />
+          <img
+            className={styles.logo}
+            src="/logoBenefit.png"
+            alt="Logo-BeneFit"
+          />
         </Link>
       </div>
 

@@ -6,7 +6,7 @@ export default function Benefits() {
       <div className={styles.container} id="Home">
         <div className={styles.leftContainer}>
           <p className={styles.title}>
-            O que você ganha se tornando membro do Clube Benefit?
+            O que você ganha se tornando membro do Clube Poupy?
           </p>
 
           <div className={styles.item}>
@@ -34,7 +34,7 @@ export default function Benefits() {
             <img src="/old.svg" alt="" />
 
             <p className={styles.description}>
-              No Clube Benefit, temos ofertas para todos, de jovens aficionados
+              No Clube Poupy, temos ofertas para todos, de jovens aficionados
               por compras online a experientes caçadores de ofertas. Participe
               de uma comunidade que valoriza a economia inteligente em todas as
               fases da vida.
