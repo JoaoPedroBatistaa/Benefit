@@ -32,7 +32,7 @@ export default async function handler(
          headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'access_token': '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDA0NDkyOTc6OiRhYWNoXzVhMmM1ZTJhLTE4ZGItNDA1My1hNWNkLTFlMWRlODAzYWM3Yg==' // Certifique-se de substituir este valor
+            'access_token': process.env.ASAAS_ACCESS_TOKEN // Certifique-se de substituir este valor
          }
       });
 
