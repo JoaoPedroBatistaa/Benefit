@@ -261,6 +261,7 @@ export default function Register() {
     };
 
     try {
+      console.log("Enviando dados de pagamento:", paymentData);
       const response = await fetch("/api/create-payment", {
         method: "POST",
         headers: {
