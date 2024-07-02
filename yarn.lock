@@ -1264,6 +1264,11 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+dotenv@^16.4.5:
+  version "16.4.5"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
+  integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
+
 electron-to-chromium@^1.4.477:
   version "1.4.488"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.488.tgz"
@@ -1291,6 +1296,11 @@ enquire.js@^2.1.6:
   version "2.1.6"
   resolved "https://registry.npmjs.org/enquire.js/-/enquire.js-2.1.6.tgz"
   integrity sha512-/KujNpO+PT63F7Hlpu4h3pE3TokKRHN26JYmQpPyjkRD/N57R7bPDNojMXdi7uveAKjYB7yQnartCxZnFWr0Xw==
+
+env@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/env/-/env-0.0.2.tgz#50c19f307b129a45845b6b686df5b39dd40d1cf0"
+  integrity sha512-yP8LfjO4ughSHD/3HgLPinWzexmaOGvRfs2TFx0SZhOm7j1xPi9evjuGcLiNVHIGLmcsgMak4eDbBzlYqGIVxw==
 
 es-abstract@^1.19.0, es-abstract@^1.20.4:
   version "1.21.2"

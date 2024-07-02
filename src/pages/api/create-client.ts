@@ -1,11 +1,10 @@
-// Arquivo: pages/api/create-client.ts
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type ResponseData = {
    success: boolean;
    message?: string;
-   customer?: string; // Ajustei para retornar apenas o ID do cliente, conforme sua última versão
+   customer?: string;
 };
 
 export default async function handler(
@@ -18,7 +17,24 @@ export default async function handler(
    }
 
    const { nome, email, cpf, telefone } = req.body;
-   console.log("Recebendo requisição com:", { nome, email, cpf, telefone }); // Log de entrada
+   console.log("Recebendo requisição com:", { nome, email, cpf, telefone });
+
+   // Tratamento do token de acesso para remover espaços e quebras de linha
+   let asaasAccessToken = process.env.ASAAS_ACCESS_TOKEN?.trim().replace(/\s/g, '');
+
+   // Adicionando $ e == diretamente ao token
+   asaasAccessToken = `$${asaasAccessToken}==`;
+
+   // Log do token de acesso
+   console.log("Token de acesso ASAAS:", asaasAccessToken.replace(/\s/g, ''));
+
+   if (!asaasAccessToken) {
+      console.error("Token de acesso ASAAS não encontrado nas variáveis de ambiente.");
+      return res.status(500).json({
+         success: false,
+         message: 'Token de acesso não configurado',
+      });
+   }
 
    try {
       const asaasResponse = await axios.post('https://asaas.com/api/v3/customers', {
@@ -27,23 +43,31 @@ export default async function handler(
          cpfCnpj: cpf,
          phone: telefone,
          mobilePhone: telefone,
-         // Os demais campos estão sendo enviados como strings vazias
       }, {
          headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'access_token': process.env.ASAAS_ACCESS_TOKEN // Certifique-se de substituir este valor
+            'access_token': asaasAccessToken,
          }
       });
 
-      console.log("Resposta do ASAAS:", asaasResponse.data); // Log da resposta do ASAAS
+      console.log("Resposta do ASAAS:", asaasResponse.data);
 
       return res.status(200).json({
          success: true,
-         customer: asaasResponse.data.id // Retorna apenas o ID do cliente
+         customer: asaasResponse.data.id
       });
    } catch (error: any) {
-      console.error('Erro ao criar cliente no ASAAS:', error.response ? error.response.data : error); // Log detalhado do erro
+      console.error('Erro ao criar cliente no ASAAS:', error.response ? error.response.data : error);
+
+      if (error.response) {
+         console.error("Detalhes do erro:", {
+            status: error.response.status,
+            headers: error.response.headers,
+            data: error.response.data,
+         });
+      }
+
       return res.status(500).json({
          success: false,
          message: 'Internal Server Error'
