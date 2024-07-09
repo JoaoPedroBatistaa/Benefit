@@ -4,21 +4,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
    console.log("Recebendo requisição para create-payment", req.body); // Loga os dados recebidos
 
-   let asaasAccessToken = process.env.ASAAS_ACCESS_TOKEN?.trim().replace(/\s/g, '');
-
-   // Adicionando $ e == diretamente ao token
-   asaasAccessToken = `$${asaasAccessToken}==`;
-
-   // Log do token de acesso
-   console.log("Token de acesso ASAAS:", asaasAccessToken.replace(/\s/g, ''));
-
-   if (!asaasAccessToken) {
-      console.error("Token de acesso ASAAS não encontrado nas variáveis de ambiente.");
-      return res.status(500).json({
-         success: false,
-         message: 'Token de acesso não configurado',
-      });
-   }
 
    if (req.method === 'POST') {
       try {
@@ -27,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             headers: {
                'accept': 'application/json',
                'content-type': 'application/json',
-               'access_token': asaasAccessToken,
+               'access_token': process.env.ASAAS_ACCESS_TOKEN,
             },
          });
          console.log("Resposta do ASAAS", data);

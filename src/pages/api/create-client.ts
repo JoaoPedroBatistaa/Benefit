@@ -1,5 +1,8 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
 import type { NextApiRequest, NextApiResponse } from 'next';
+
+dotenv.config();
 
 type ResponseData = {
    success: boolean;
@@ -19,22 +22,6 @@ export default async function handler(
    const { nome, email, cpf, telefone } = req.body;
    console.log("Recebendo requisição com:", { nome, email, cpf, telefone });
 
-   // Tratamento do token de acesso para remover espaços e quebras de linha
-   let asaasAccessToken = process.env.ASAAS_ACCESS_TOKEN?.trim().replace(/\s/g, '');
-
-   // Adicionando $ e == diretamente ao token
-   asaasAccessToken = `$${asaasAccessToken}==`;
-
-   // Log do token de acesso
-   console.log("Token de acesso ASAAS:", asaasAccessToken.replace(/\s/g, ''));
-
-   if (!asaasAccessToken) {
-      console.error("Token de acesso ASAAS não encontrado nas variáveis de ambiente.");
-      return res.status(500).json({
-         success: false,
-         message: 'Token de acesso não configurado',
-      });
-   }
 
    try {
       const asaasResponse = await axios.post('https://asaas.com/api/v3/customers', {
@@ -47,7 +34,7 @@ export default async function handler(
          headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'access_token': asaasAccessToken,
+            'access_token': process.env.ASAAS_ACCESS_TOKEN,
          }
       });
 
