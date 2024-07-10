@@ -252,7 +252,7 @@ export default function Register() {
         mobilePhone: telefone.replace(/\D/g, ""),
       },
       customer: clienteId,
-      nextDueDate: new Date(new Date().setDate(new Date().getDate() + 30))
+      nextDueDate: new Date(new Date().setDate(new Date().getDate() + 0))
         .toISOString()
         .split("T")[0],
       value: 9.9,
