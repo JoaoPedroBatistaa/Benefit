@@ -256,8 +256,8 @@ export default function Register() {
         .toISOString()
         .split("T")[0],
       value: 9.9,
-      description: "Benefit - Clube de Benefícios",
-      creditCardToken: "a75a1d98-c52d-4a6b-a413-71e00b193c99",
+      description: "Poupy - Clube de Benefícios",
+      creditCardToken: "",
     };
 
     try {
