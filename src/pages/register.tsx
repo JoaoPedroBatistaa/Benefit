@@ -247,7 +247,7 @@ export default function Register() {
         cpfCnpj: cpf.replace(/\D/g, ""),
         postalCode: cep.replace("-", ""),
         addressNumber: numeroEndereco,
-        addressComplement: null,
+        addressComplement: "",
         phone: telefone.replace(/\D/g, ""),
         mobilePhone: telefone.replace(/\D/g, ""),
       },
