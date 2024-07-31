@@ -25,8 +25,8 @@ export default function Register() {
   const [senha, setSenha] = useState("");
   const [telefone, setTelefone] = useState("");
   const [contaCriada, setContaCriada] = useState(false);
-  const [mercadoPagoLink, setMercadoPagoLink] = useState("");
   const [clienteId, setClienteId] = useState("");
+  const [payerId, setPayerId] = useState("");
   const [nomeNoCartao, setNomeNoCartao] = useState("");
   const [numeroDoCartao, setNumeroDoCartao] = useState("");
   const [mesVencimento, setMesVencimento] = useState("");
@@ -43,12 +43,14 @@ export default function Register() {
       const emailLocalStorage = localStorage.getItem("email");
       const telefoneLocalStorage = localStorage.getItem("Telefone");
       const clienteLocalStorage = localStorage.getItem("ClienteId");
+      const payerLocalStorage = localStorage.getItem("paymentId");
 
       if (nomeLocalStorage) setNome(nomeLocalStorage);
       if (cpfLocalStorage) setCpf(cpfLocalStorage);
       if (emailLocalStorage) setEmail(emailLocalStorage);
       if (telefoneLocalStorage) setTelefone(telefoneLocalStorage);
       if (clienteLocalStorage) setClienteId(clienteLocalStorage);
+      if (payerLocalStorage) setClienteId(payerLocalStorage);
     }
   }, [router.query]);
 
@@ -213,6 +215,7 @@ export default function Register() {
         querySnapshot.forEach(async (document) => {
           const userDocRef = doc(db, "Clients", document.id);
           await updateDoc(userDocRef, { paymentId: paymentId });
+          localStorage.setItem("paymentId", paymentId);
         });
         console.log(
           "ID do pagamento atualizado com sucesso para o usuário:",

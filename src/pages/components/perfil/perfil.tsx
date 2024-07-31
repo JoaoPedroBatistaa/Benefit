@@ -1,17 +1,14 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Lottie from "react-lottie";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import animationData from "../../../../public/animation/loadBenefit.json";
 import styles from "./perfil.module.scss";
 
-import Head from "next/head";
-
-import Lottie from "react-lottie";
-import animationData from "../../../../public/animation/loadBenefit.json";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 export default function Perfil(props: any) {
   const { isPerfilVisible, onClosePerfil, onLogoutPerfil } = props;
-
   const router = useRouter();
 
   const defaultOptions = {
@@ -22,6 +19,15 @@ export default function Perfil(props: any) {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+
+  const [link, setLink] = useState<string | null>(null);
+  const [nomeCliente, setNomeCliente] = useState<string | null>(null);
+  const [cpf, setCpf] = useState<string | null>(null);
+  const [telefone, setTelefone] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [paymentId, setPaymentId] = useState<string | null>(null);
+  const [ativo, setAtivo] = useState<string | null>("Carregando status");
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     if (isPerfilVisible) {
@@ -38,15 +44,6 @@ export default function Perfil(props: any) {
     };
   }, [isPerfilVisible]);
 
-  const [link, setLink] = useState<string | null>(null);
-  const [nomeCliente, setNomeCliente] = useState<string | null>(null);
-  const [cpf, setCpf] = useState<string | null>(null);
-  const [telefone, setTelefone] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const [paymentId, setPaymentId] = useState<string | null>(null);
-  const [ativo, setAtivo] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       const currentNomeCliente = localStorage.getItem("nomeCliente");
@@ -54,7 +51,6 @@ export default function Perfil(props: any) {
       const currentTelefone = localStorage.getItem("Telefone");
       const currentEmail = localStorage.getItem("email");
       const currentPaymentId = localStorage.getItem("paymentId");
-      const currentAtivo = localStorage.getItem("Ativo");
       const currentUserId = localStorage.getItem("userId");
 
       setNomeCliente(currentNomeCliente || null);
@@ -62,66 +58,41 @@ export default function Perfil(props: any) {
       setTelefone(currentTelefone || null);
       setEmail(currentEmail || null);
       setPaymentId(currentPaymentId || null);
-      setAtivo(currentAtivo || null);
+
+      if (currentPaymentId) {
+        checkSubscriptionStatus(currentPaymentId);
+      }
     }
   }, []);
 
-  const primeiraLetraNome = nomeCliente ? nomeCliente.charAt(0) : "";
-
-  const cancelSubscription = () => {
-    const userConfirmed = window.confirm(
-      "Tem certeza que deseja cancelar o plano?"
-    );
-
-    if (userConfirmed) {
-      const paymentId =
-        typeof window !== "undefined"
-          ? localStorage.getItem("paymentId") || ""
-          : "";
-      const userId =
-        typeof window !== "undefined"
-          ? localStorage.getItem("userId") || ""
-          : "";
-
-      if (!paymentId) {
-        console.error("Payment ID não encontrado.");
-        return;
-      }
-
-      fetch("/api/cancel_payment", {
-        method: "PUT",
+  const checkSubscriptionStatus = async (paymentId: string) => {
+    try {
+      const response = await fetch("/api/checkSubscriptionStatus", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          paymentId,
-          userId,
-        }),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("Erro ao cancelar o pagamento.");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          toast.success("Assinatura cancelada com sucesso!");
-          console.log("Assinatura cancelada com sucesso!");
-          handleLogout();
-          onClosePerfil();
-        })
-        .catch((error) => {
-          toast.error(`Erro ao cancelar a assinatura: ${error}`);
-          console.log(`Erro ao cancelar a assinatura: ${error}`);
-        });
+        body: JSON.stringify({ paymentId }),
+      });
+
+      const data = await response.json();
+      if (data.status === "ACTIVE") {
+        setAtivo("Ativo");
+      } else {
+        setAtivo("Inativo");
+      }
+    } catch (error) {
+      console.error("Erro ao verificar status da assinatura:", error);
+      setAtivo("Erro ao carregar status");
     }
   };
+
+  const primeiraLetraNome = nomeCliente ? nomeCliente.charAt(0) : "";
 
   function formatarCPF(cpf: any) {
     if (!cpf || typeof cpf !== "string" || cpf.length !== 11) {
       return cpf;
     }
-
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   }
 
@@ -202,7 +173,6 @@ export default function Perfil(props: any) {
       });
 
       const { encrypted } = await response.json();
-
       return encrypted;
     } catch (error) {
       console.error("Erro ao encriptar os dados:", error);
@@ -232,18 +202,8 @@ export default function Perfil(props: any) {
       });
 
       const data = await response.json();
-
-      console.log(data);
-      console.log(data.link);
-
-      if (!response.ok) {
-        alert(data.error);
-        return;
-      }
-
       if (data && data.link && data.link.dado && data.link.dado.link) {
         const url = data.link.dado.link;
-
         window.location.href = url;
       } else {
         console.log(
@@ -317,29 +277,23 @@ export default function Perfil(props: any) {
                 <div className={styles.data}>
                   <p
                     className={styles.dataData}
-                    style={{ color: ativo === "true" ? "#08d40a" : "red" }}
+                    style={{ color: ativo === "Ativo" ? "#08d40a" : "red" }}
                   >
-                    {ativo === "true" ? "Ativo" : "Inativo"}
+                    {ativo}
                   </p>
                 </div>
-
-                {/* {ativo === "true" && (
-                  <p className={styles.cancel} onClick={cancelSubscription}>
-                    Cancelar plano
-                  </p>
-                )} */}
               </div>
 
               <div className={styles.buttons}>
                 <button
                   onClick={
-                    ativo === "true"
+                    ativo === "Ativo"
                       ? handleSubmit
                       : () => router.push("/register?contaCriada=true")
                   }
                   className={styles.Button}
                 >
-                  {ativo === "true" ? "Acessar clube" : "Obter acesso"}
+                  {ativo === "Ativo" ? "Acessar clube" : "Obter acesso"}
                 </button>
 
                 <button onClick={handleLogout} className={styles.outButton}>
