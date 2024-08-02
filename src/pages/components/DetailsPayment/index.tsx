@@ -148,7 +148,7 @@ export default function PaymentDetailsPage() {
 
             <div className={styles.detailsData}>
               <p className={styles.dataTitle}>Modalidade de recorrência</p>
-              <p className={styles.dataValue}>{paymentDetails.cycle}</p>
+              <p className={styles.dataValue}>Mensal</p>
             </div>
 
             <hr className={styles.separetor} />
@@ -164,7 +164,7 @@ export default function PaymentDetailsPage() {
 
             <div className={styles.detailsData}>
               <p className={styles.dataTitle}>Forma de pagamento</p>
-              <p className={styles.dataValue}>{paymentDetails.billingType}</p>
+              <p className={styles.dataValue}>Cartão de crédito</p>
             </div>
 
             <hr className={styles.separetor} />
