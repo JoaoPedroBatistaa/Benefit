@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Lottie from "react-lottie";
@@ -28,6 +29,7 @@ export default function Perfil(props: any) {
   const [ativo, setAtivo] = useState<string | null>("Carregando status");
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [ativoPorApi, setAtivoPorApi] = useState(false);
 
   useEffect(() => {
     if (isPerfilVisible) {
@@ -82,12 +84,15 @@ export default function Perfil(props: any) {
       const data = await response.json();
       if (data.status === "ACTIVE") {
         setAtivo("Ativo");
+        setAtivoPorApi(true);
       } else {
         setAtivo("Inativo");
+        setAtivoPorApi(false);
       }
     } catch (error) {
       console.error("Erro ao verificar status da assinatura:", error);
       setAtivo("Erro ao carregar status");
+      setAtivoPorApi(false);
     }
   };
 
@@ -272,10 +277,10 @@ export default function Perfil(props: any) {
                   </p>
                 </div>
 
-                {ativo === "Ativo" && (
-                  <a href="/payment-details" className={styles.dataLink}>
+                {ativo === "Ativo" && ativoPorApi && (
+                  <Link href="/payment-details" className={styles.dataLink}>
                     Ver detalhes do pagamento
-                  </a>
+                  </Link>
                 )}
               </div>
 
