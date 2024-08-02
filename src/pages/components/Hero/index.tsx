@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 export default function Hero() {
   return (
     <>
-      <div className={styles.container} id="Home">
+      <div className={styles.container} id="inicio">
         <div className={styles.leftContainer}>
           <p className={styles.title}>
             Seja Membro do Clube Poupy e Economize todos os dias!

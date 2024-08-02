@@ -20,7 +20,6 @@ export default function Perfil(props: any) {
     },
   };
 
-  const [link, setLink] = useState<string | null>(null);
   const [nomeCliente, setNomeCliente] = useState<string | null>(null);
   const [cpf, setCpf] = useState<string | null>(null);
   const [telefone, setTelefone] = useState<string | null>(null);
@@ -28,6 +27,7 @@ export default function Perfil(props: any) {
   const [paymentId, setPaymentId] = useState<string | null>(null);
   const [ativo, setAtivo] = useState<string | null>("Carregando status");
   const [userId, setUserId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isPerfilVisible) {
@@ -51,15 +51,19 @@ export default function Perfil(props: any) {
       const currentTelefone = localStorage.getItem("Telefone");
       const currentEmail = localStorage.getItem("email");
       const currentPaymentId = localStorage.getItem("paymentId");
-      const currentUserId = localStorage.getItem("userId");
+      const currentManual = localStorage.getItem("manual");
+      const currentAtivo = localStorage.getItem("Ativo");
 
       setNomeCliente(currentNomeCliente || null);
       setCpf(currentCpf || null);
       setTelefone(currentTelefone || null);
       setEmail(currentEmail || null);
       setPaymentId(currentPaymentId || null);
+      setUserId(localStorage.getItem("userId"));
 
-      if (currentPaymentId) {
+      if (currentManual) {
+        setAtivo(currentAtivo === "true" ? "Ativo" : "Inativo");
+      } else if (currentPaymentId) {
         checkSubscriptionStatus(currentPaymentId);
       }
     }
@@ -115,21 +119,6 @@ export default function Perfil(props: any) {
     onLogoutPerfil();
   };
 
-  const nomeFromStorage =
-    typeof window !== "undefined"
-      ? localStorage.getItem("nomeCliente") || ""
-      : "";
-  const cpfFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("cpf") || "" : "";
-  const telefoneFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("Telefone") || "" : "";
-  const emailFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("email") || "" : "";
-  const senhaFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("senha") || "" : "";
-
-  const [isLoading, setIsLoading] = useState(false);
-
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     setIsLoading(true);
@@ -142,10 +131,10 @@ export default function Perfil(props: any) {
       const data = await response.json();
       const accessToken = data.accessToken;
 
-      const encryptedNome = await encryptData(nomeFromStorage);
-      const encryptedCpf = await encryptData(cpfFromStorage);
-      const encryptedEmail = await encryptData(emailFromStorage);
-      const encryptedTelefone = await encryptData(telefoneFromStorage);
+      const encryptedNome = await encryptData(nomeCliente || "");
+      const encryptedCpf = await encryptData(cpf || "");
+      const encryptedEmail = await encryptData(email || "");
+      const encryptedTelefone = await encryptData(telefone || "");
 
       await loginApi(
         accessToken,
@@ -282,6 +271,12 @@ export default function Perfil(props: any) {
                     {ativo}
                   </p>
                 </div>
+
+                {ativo === "Ativo" && (
+                  <a href="/payment-details" className={styles.dataLink}>
+                    Ver detalhes do pagamento
+                  </a>
+                )}
               </div>
 
               <div className={styles.buttons}>

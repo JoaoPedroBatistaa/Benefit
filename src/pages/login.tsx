@@ -30,6 +30,7 @@ interface Login {
   ClienteId: string;
 
   Ativo: boolean;
+  manual: boolean;
 }
 
 export default function Login() {
@@ -58,6 +59,7 @@ export default function Login() {
           cpf: data.cpf,
           paymentId: data.paymentId,
           ClienteId: data.ClienteId,
+          manual: data.manual,
         };
         return login;
       });
@@ -83,6 +85,7 @@ export default function Login() {
       localStorage.setItem("paymentId", user.paymentId);
       localStorage.setItem("ClienteId", user.ClienteId);
       localStorage.setItem("Ativo", user.Ativo.toString());
+      localStorage.setItem("manual", user.Ativo.toString());
 
       toast.success("Login bem-sucedido!", {
         position: "top-right",

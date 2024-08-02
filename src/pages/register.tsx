@@ -151,17 +151,42 @@ export default function Register() {
         ClienteId: clienteId,
       });
 
-      toast.success("Usuário cadastrado com sucesso!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+      // Chama a API para enviar o e-mail de boas-vindas
+      const response = await fetch("/api/sendWelcomeEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name: nome }),
       });
 
-      setContaCriada(true);
+      if (response.ok) {
+        toast.success("Usuário cadastrado com sucesso!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        setContaCriada(true);
+      } else {
+        console.error("Erro ao enviar o e-mail de boas-vindas");
+        toast.error(
+          "Erro ao enviar o e-mail de boas-vindas. Por favor, tente novamente.",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+      }
     } catch (error) {
       console.error("Erro ao criar o usuário:", error);
       toast.error("Erro ao finalizar o cadastro. Por favor, tente novamente.", {

@@ -13,13 +13,13 @@ export default function Footer() {
 
         <div className={styles.footer}>
           <div>
-            <Link href={"/#Home"}>
+            <Link href={"/#inicio"}>
               <p className={styles.description}>Início</p>
             </Link>
-            <Link href={"/#Form"}>
+            <Link href={"/#cliente"}>
               <p className={styles.description}>Faça parte</p>
             </Link>
-            <Link href={"/#About"}>
+            <Link href={"/#contato"}>
               <p className={styles.description}>Contato</p>
             </Link>
           </div>
@@ -27,14 +27,14 @@ export default function Footer() {
           <div>
             <Link
               href={
-                "https://www.instagram.com/clubebenefit?igsh=MThoM2FwcjN5ODA3NA%3D%3D"
+                "https://www.instagram.com/clubepoupy?igsh=N2FrajBpeW1heTJo"
               }
             >
               <p className={styles.description}>Instagram</p>
             </Link>
             <Link
               href={
-                "https://www.facebook.com/profile.php?id=100092854661969&mibextid=WC7FNe"
+                "https://www.facebook.com/profile.php?id=61560889181740&mibextid=LQQJ4d"
               }
             >
               <p className={styles.description}>Facebook</p>
@@ -42,9 +42,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className={styles.desc}>E-mail</p>
+            <p className={styles.desc}>Dúvidas com sua conta ou pagamento?</p>
+            <p className={styles.description}>atendimento@clubepoupy.com.br </p>
+            <p className={styles.desc}>
+              Dúvidas dentro do Clube ou algum com benefício?
+            </p>
             <p className={styles.description}>
-              atendimento@temmaisvantagens.com.br
+              atendimento@temmaisvantagens.com.br{" "}
             </p>
             <p className={styles.desc}>WhatsApp</p>
             <p className={styles.description}>(61) 99354-6881</p>
@@ -71,14 +75,14 @@ export default function Footer() {
               <div>
                 <Link
                   href={
-                    "https://www.instagram.com/clubebenefit?igsh=MThoM2FwcjN5ODA3NA%3D%3D"
+                    "https://www.instagram.com/clubepoupy?igsh=N2FrajBpeW1heTJo"
                   }
                 >
                   <p className={styles.description}>Instagram</p>
                 </Link>
                 <Link
                   href={
-                    "https://www.facebook.com/profile.php?id=100092854661969&mibextid=WC7FNe"
+                    "https://www.facebook.com/profile.php?id=61560889181740&mibextid=LQQJ4d"
                   }
                 >
                   <p className={styles.description}>Facebook</p>
@@ -87,9 +91,15 @@ export default function Footer() {
             </div>
 
             <div className={styles.rightInfo}>
-              <p className={styles.desc}>E-mail</p>
+              <p className={styles.desc}>Dúvidas com sua conta ou pagamento?</p>
               <p className={styles.description}>
-                atendimento@clubepoupy.com.br
+                atendimento@clubepoupy.com.br{" "}
+              </p>
+              <p className={styles.desc}>
+                Dúvidas dentro do Clube ou algum com benefício?
+              </p>
+              <p className={styles.description}>
+                atendimento@temmaisvantagens.com.br{" "}
               </p>
               <p className={styles.desc}>WhatsApp</p>
               <p className={styles.description}>(61) 99354-6881</p>

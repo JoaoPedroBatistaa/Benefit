@@ -39,6 +39,19 @@
     display: flex;
   }
 
+  .navToggle {
+    flex-direction: row;
+    align-items: center;
+
+    gap: 0.5rem;
+
+    p {
+      font-weight: 500;
+
+      font-family: "Syne", sans-serif;
+    }
+  }
+
   .perfilHead {
     display: flex;
     flex-direction: row;

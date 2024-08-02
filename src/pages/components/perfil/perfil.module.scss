@@ -204,6 +204,18 @@
   outline: none;
 }
 
+.dataLink {
+  width: 75%;
+  background-color: #ffffff;
+
+  font-family: "Syne", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #08d40a;
+
+  outline: none;
+}
+
 .cancel {
   color: red;
   text-decoration: underline;
@@ -268,6 +280,10 @@
 @media (max-width: 767px) {
   .ContainerLeft {
     display: none; /* Oculta ContainerLeft em dispositivos móveis */
+  }
+
+  .buttons {
+    margin-bottom: 4rem;
   }
 
   .header {

@@ -265,6 +265,8 @@ const HeaderMobile = () => {
       <div className={styles.perfilHead}>
         <div className={styles.navToggle} onClick={() => setIsOpen(!isOpen)}>
           <img src="/menu.svg" alt="" />
+
+          <p>Menu</p>
         </div>
 
         <Link href="/">

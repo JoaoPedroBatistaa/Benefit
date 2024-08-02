@@ -1,0 +1,274 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 9rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  padding-bottom: 7.5rem;
+
+  background-color: #fbfbfb;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: row;
+
+  padding-top: 2.5rem;
+}
+
+.rightContainer {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.5rem;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  margin-bottom: 3rem;
+}
+
+.title {
+  color: #08d40a;
+
+  font-size: 40px;
+  font-weight: 700;
+
+  font-family: "Syne", sans-serif;
+
+  text-align: center;
+}
+
+.description {
+  color: #dedede;
+
+  font-size: 24px;
+  font-weight: 500;
+
+  font-family: "Syne", sans-serif;
+
+  max-width: 75%;
+
+  span {
+    color: #a900d3;
+  }
+}
+
+.professional {
+  display: flex;
+  flex-direction: column;
+  background-color: #fbfbfb;
+  border-radius: 20px;
+  border: 1px solid #08d40a;
+  transition: background-color 01s ease;
+  overflow: hidden;
+}
+
+.professional.active {
+  background-color: #fff;
+}
+
+.descriptionProf {
+  color: #404049;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Syne", sans-serif;
+  margin-top: -2rem;
+  padding: 2rem 2.5rem;
+  display: none;
+  transition: max-height 0.5s ease;
+  opacity: 0;
+  transition: opacity 6s ease;
+}
+
+.professional.active .descriptionProf {
+  opacity: 1;
+  display: block;
+}
+
+.professionalHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 1.5rem 2.5rem;
+  border-radius: 20px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.professionalTitle {
+  color: #08d40a;
+
+  font-size: 24px;
+  font-weight: 500;
+
+  font-family: "Syne", sans-serif;
+}
+
+.separetor {
+  color: #d1d1d1;
+
+  margin-top: 5rem;
+  margin-bottom: 2rem;
+}
+
+@media screen and (min-width: 2100px) {
+  .container {
+    padding-left: 20rem;
+    padding-right: 20rem;
+  }
+}
+
+@media (max-width: 1440px) {
+  .container {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1440px) {
+  .container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  .ctaButton {
+    font-size: 10px;
+  }
+
+  .ourButton {
+    font-size: 10px;
+  }
+
+  .navItem {
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .inputField {
+    font-size: 12px;
+  }
+
+  .selectField {
+    font-size: 12px;
+  }
+
+  .submitButton {
+    font-size: 12px;
+  }
+
+  .metaValue {
+    font-size: 32px;
+  }
+
+  .metaDescription {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+
+    flex-direction: column;
+  }
+
+  .subTitleContainer {
+    img {
+      width: 1rem;
+    }
+  }
+
+  .subTitle {
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: 26px;
+
+    width: 100%;
+    max-width: 100%;
+
+    margin-bottom: -2rem;
+  }
+
+  .description {
+    font-size: 16px;
+    max-width: 100%;
+  }
+
+  .separetor {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .infoContainer {
+    flex-direction: column;
+  }
+
+  .leftContainer {
+    width: 100%;
+
+    margin-bottom: 3rem;
+  }
+
+  .rightContainer {
+    width: 100%;
+
+    padding-left: 0;
+  }
+
+  .professionalHeader {
+    img {
+      width: 1.5rem;
+
+      margin-right: -1rem;
+    }
+
+    padding: 1.5rem 2.5rem;
+  }
+
+  .professionalTitle {
+    font-size: 16px;
+
+    margin-left: -1rem;
+  }
+
+  .professional {
+    padding: 0rem 0rem;
+  }
+
+  .descriptionProf {
+    margin-left: -1rem;
+  }
+}

@@ -1,6 +1,7 @@
 import Benefits from "../../components/Benefits";
 import Cashback from "../../components/Cashback";
 import Footer from "../../components/Footer";
+import Gains from "../../components/Gains";
 import Hero from "../../components/Hero";
 import Cliente from "../../components/cliente/cliente";
 import Header from "../../components/header/header";
@@ -20,6 +21,7 @@ function Home() {
         <Benefits></Benefits>
         <SectionCalculadora />
         <Cashback></Cashback>
+        <Gains></Gains>
         {/* <SectionApp /> */}
         <Footer></Footer>
       </section>

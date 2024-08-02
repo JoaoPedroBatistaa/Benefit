@@ -77,7 +77,7 @@
   justify-content: space-between;
 
   img {
-    width: 10rem;
+    width: auto;
     height: 5rem;
 
     margin-top: 1.5rem;
@@ -198,11 +198,17 @@
 
     align-items: center;
 
-    img {
-      width: 12rem;
+    width: auto;
+    height: 5rem;
 
-      margin-top: 5rem;
+    img {
+      max-width: 40vw;
+
+      margin-top: 3rem;
+      margin-bottom: 3rem;
     }
+
+    background-color: #000;
   }
 
   .desc {
@@ -211,7 +217,7 @@
 
   .infosContent {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     gap: 4rem;
   }
