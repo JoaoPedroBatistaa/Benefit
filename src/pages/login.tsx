@@ -85,8 +85,10 @@ export default function Login() {
       localStorage.setItem("paymentId", user.paymentId);
       localStorage.setItem("ClienteId", user.ClienteId);
       localStorage.setItem("Ativo", user.Ativo.toString());
-      localStorage.setItem("manual", user.Ativo.toString());
 
+      if (user.manual !== undefined) {
+        localStorage.setItem("manual", user.manual.toString());
+      }
       toast.success("Login bem-sucedido!", {
         position: "top-right",
         autoClose: 5000,
