@@ -18,8 +18,8 @@ export async function sendWelcomeEmail(data: { email: string; name: string }) {
    const mailOptions = {
       from: process.env.SMTP_FROM_EMAIL,
       to: email,
-      subject: 'Bem-vindo ao Clube Poupy!',
-      text: `Olá ${name}, bem-vindo ao Clube Poupy!`,
+      subject: 'Finalize seu Cadastro e Acesse Todos os Benefícios do Clube Poupy!',
+      text: `Olá ${name}, seja bem-vindo(a) ao Clube Poupy!`,
       html: `
             <div style="padding: 20px; background-color: #E0E0E0; font-size: 18px;">
                 <div style="background-color: #fff; border-radius: 8px; overflow: hidden;">
@@ -28,17 +28,17 @@ export async function sendWelcomeEmail(data: { email: string; name: string }) {
                     </div>
                     <div style="padding: 20px; border-bottom: 20px solid #08d40a; border-radius: 8px;">
                         <p><strong style="color: #08d40a;">Olá ${name},</strong></p>
-                        <p style="color: #404049;">Bem-vindo ao <strong style="color: #08d40a;">Clube Poupy</strong>!</p>
-                        <p style="color: #404049;">Estamos entusiasmados por tê-lo(a) conosco. No <strong style="color: #08d40a;">Clube Poupy</strong>, você tem acesso ao maior clube de benefícios da América Latina, com descontos e ofertas exclusivas de mais de 1.600 empresas parceiras!</p>
-                        <p style="color: #404049;"><strong style="color: #08d40a;">Com o Clube Poupy, você pode:</strong></p>
+                        <p style="color: #404049;">Seja bem-vindo(a) ao <strong style="color: #08d40a;">Clube Poupy</strong>!</p>
+                        <p style="color: #404049;">Estamos muito felizes por tê-lo(a) conosco. Agora que você faz parte do maior clube de benefícios da América Latina, está a apenas um passo de aproveitar descontos e ofertas exclusivas de mais de 1.600 empresas parceiras!</p>
+                        <p style="color: #404049;"><strong style="color: #08d40a;">Com o Clube Poupy, você poderá:</strong></p>
                         <ul style="color: #404049;">
-                            <li>Aproveitar descontos em uma ampla variedade de produtos e serviços, incluindo vestuário, tecnologia, beleza, e muito mais!</li>
-                            <li>Receber cashback em compras selecionadas</li>
-                            <li>Acessar promoções exclusivas através de links, cupons e vouchers</li>
-                            <li>Utilizar sua carteirinha digital em lojas físicas parceiras</li>
+                            <li>Aproveitar descontos em uma ampla variedade de produtos e serviços, desde vestuário, tecnologia, alimentação até beleza, educação, transporte e muito mais.</li>
+                            <li>Receber cashback em compras selecionadas.</li>
+                            <li>Acessar promoções exclusivas através de links, cupons e vouchers.</li>
+                            <li>Utilizar sua carteirinha digital nas mais de 22.000 lojas físicas parceiras.</li>
                         </ul>
-                        <p style="color: #404049;">Para começar, visite nosso portal e explore todas as vantagens disponíveis. Em breve, você também poderá aproveitar nossos benefícios através do nosso aplicativo, que está quase pronto para ser lançado!</p>
-                        <p style="color: #404049;">Se precisar de qualquer assistência, nossa equipe de suporte está sempre pronta para ajudá-lo(a).</p>
+                        <p style="color: #404049;">Para começar a economizar, é simples: continue no nosso site e você será redirecionado para a página de pagamentos, ou faça o login na conta que você acabou de criar e clique em "Obter Acesso" no menu superior. Preencha os campos com suas informações de pagamento e finalize a compra. Pronto! Você se tornará um membro ativo e poderá explorar todas as vantagens disponíveis no nosso portal. E tem mais: em breve, nossos benefícios estarão também no aplicativo que estamos prestes a lançar!</p>
+                        <p style="color: #404049;">Caso precise de qualquer ajuda, nossa equipe de suporte está à disposição para assisti-lo(a) pelo email atendimento@clubepoupy.com.br.</p>
                         <p style="color: #404049;">Atenciosamente,</p>
                         <p><strong style="color: #08d40a;">Equipe Clube Poupy</strong></p>
                     </div>
