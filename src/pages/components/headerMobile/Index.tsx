@@ -1,23 +1,20 @@
-import Link from "next/link";
-import { useEffect, useState } from "react";
-
-import Perfil from "../perfil/perfil";
-
-import { useRouter } from "next/router";
-
 import Head from "next/head";
-import styles from "./styles.module.scss";
-
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Lottie from "react-lottie";
 import animationData from "../../../../public/animation/loadBenefit.json";
+import Perfil from "../perfil/perfil";
+import styles from "./styles.module.scss";
 
 const HeaderMobile = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const [ativo, setAtivo] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [ativoPorApi, setAtivoPorApi] = useState(false);
+
+  const router = useRouter();
 
   const defaultOptions = {
     loop: true,
@@ -26,6 +23,52 @@ const HeaderMobile = () => {
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
+  };
+
+  useEffect(() => {
+    const currentPaymentId = localStorage.getItem("paymentId");
+    const currentManual = localStorage.getItem("manual");
+    const currentAtivo = localStorage.getItem("Ativo");
+
+    if (currentManual) {
+      setAtivo(currentAtivo === "true" ? "Ativo" : "Inativo");
+      setIsLoggedIn(true);
+    } else if (currentPaymentId) {
+      checkSubscriptionStatus(currentPaymentId);
+    }
+  }, []);
+
+  const checkSubscriptionStatus = async (paymentId: string) => {
+    try {
+      const response = await fetch("/api/checkSubscriptionStatus", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentId }),
+      });
+
+      const data = await response.json();
+      if (data.status === "ACTIVE") {
+        setAtivo("Ativo");
+        setAtivoPorApi(true);
+        setIsLoggedIn(true);
+      } else {
+        setAtivo("Inativo");
+        setAtivoPorApi(false);
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error("Erro ao verificar status da assinatura:", error);
+      setAtivo("Erro ao carregar status");
+      setAtivoPorApi(false);
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
   };
 
   async function handleSubmit(event: React.MouseEvent<HTMLElement>) {
@@ -40,10 +83,16 @@ const HeaderMobile = () => {
       const data = await response.json();
       const accessToken = data.accessToken;
 
-      const encryptedNome = await encryptData(nomeFromStorage);
-      const encryptedCpf = await encryptData(cpfFromStorage);
-      const encryptedEmail = await encryptData(emailFromStorage);
-      const encryptedTelefone = await encryptData(telefoneFromStorage);
+      const encryptedNome = await encryptData(
+        localStorage.getItem("nomeCliente") || ""
+      );
+      const encryptedCpf = await encryptData(localStorage.getItem("cpf") || "");
+      const encryptedEmail = await encryptData(
+        localStorage.getItem("email") || ""
+      );
+      const encryptedTelefone = await encryptData(
+        localStorage.getItem("Telefone") || ""
+      );
 
       await loginApi(
         accessToken,
@@ -60,57 +109,6 @@ const HeaderMobile = () => {
     }
   }
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const currentAtivo = localStorage.getItem("Ativo");
-      setAtivo(currentAtivo);
-      if (currentAtivo) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    }
-  }, []);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    const linkValue = localStorage.getItem("link");
-    if (linkValue) {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-  };
-
-  let linkValue = "/";
-  if (typeof window !== "undefined" && window.localStorage) {
-    try {
-      linkValue = localStorage.getItem("link") || "/";
-    } catch (error) {
-      console.error("Error accessing localStorage:", error);
-    }
-  }
-  const validLink = linkValue;
-
-  // LOGIN VIA API
-
-  const nomeFromStorage =
-    typeof window !== "undefined"
-      ? localStorage.getItem("nomeCliente") || ""
-      : "";
-  const cpfFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("cpf") || "" : "";
-  const telefoneFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("Telefone") || "" : "";
-  const emailFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("email") || "" : "";
-  const senhaFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("senha") || "" : "";
-
   async function encryptData(data: string) {
     try {
       const response = await fetch("/api/encrypt", {
@@ -122,7 +120,6 @@ const HeaderMobile = () => {
       });
 
       const { encrypted } = await response.json();
-
       return encrypted;
     } catch (error) {
       console.error("Erro ao encriptar os dados:", error);
@@ -152,18 +149,8 @@ const HeaderMobile = () => {
       });
 
       const data = await response.json();
-
-      console.log(data);
-      console.log(data.link);
-
-      if (!response.ok) {
-        alert(data.error);
-        return;
-      }
-
       if (data && data.link && data.link.dado && data.link.dado.link) {
         const url = data.link.dado.link;
-
         window.location.href = url;
       } else {
         console.log(
@@ -175,31 +162,12 @@ const HeaderMobile = () => {
     }
   }
 
-  // CANCELAR PAGAMENTO
-
-  // Obter o paymentId do localStorage ou de onde você armazenou
-  const paymentId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("paymentId") || ""
-      : "";
-
-  // if (!paymentId) {
-  //   console.log("Payment ID não encontrado.");
-  //   return;
-  // }
-
   const cancelSubscription = () => {
     const userConfirmed = window.confirm(
       "Tem certeza que deseja cancelar o plano?"
     );
-
     if (userConfirmed) {
-      // O código de cancelamento do plano que você já tem vai aqui
-      const paymentId =
-        typeof window !== "undefined"
-          ? localStorage.getItem("paymentId") || ""
-          : "";
-
+      const paymentId = localStorage.getItem("paymentId");
       if (!paymentId) {
         console.error("Payment ID não encontrado.");
         return;
@@ -210,9 +178,7 @@ const HeaderMobile = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          paymentId,
-        }),
+        body: JSON.stringify({ paymentId }),
       })
         .then((res) => {
           if (!res.ok) {
@@ -237,12 +203,11 @@ const HeaderMobile = () => {
 
   const handleClosePerfil = () => {
     setIsPerfilVisible(false);
-    // setIsLoggedIn(false);
   };
 
   const handleLogoutPerfil = () => {
     setIsPerfilVisible(false);
-    setIsLoggedIn(false);
+    handleLogout();
   };
 
   return (
@@ -265,7 +230,6 @@ const HeaderMobile = () => {
       <div className={styles.perfilHead}>
         <div className={styles.navToggle} onClick={() => setIsOpen(!isOpen)}>
           <img src="/menu.svg" alt="" />
-
           <p>Menu</p>
         </div>
 
@@ -307,7 +271,7 @@ const HeaderMobile = () => {
           </div>
 
           {isLoggedIn ? (
-            ativo === "true" ? (
+            ativo === "Ativo" ? (
               <p className={styles.navItem} onClick={handleSubmit}>
                 Acessar clube
               </p>
@@ -318,7 +282,6 @@ const HeaderMobile = () => {
                   query: { contaCriada: "true" },
                 }}
               >
-                {" "}
                 <p className={styles.navItem}>Obter acesso</p>
               </Link>
             )

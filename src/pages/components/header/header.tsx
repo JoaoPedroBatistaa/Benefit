@@ -1,57 +1,18 @@
-import Link from "next/link";
-
-import { useRouter } from "next/router";
-
-import { useEffect, useState } from "react";
-import Perfil from "../perfil/perfil";
-
 import Head from "next/head";
-
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Lottie from "react-lottie";
 import animationData from "../../../../public/animation/loadBenefit.json";
+import Perfil from "../perfil/perfil";
 
 const Header = () => {
   const [link, setLink] = useState<string | null>(null);
-
   const router = useRouter();
-
   const [ativo, setAtivo] = useState<string | null>(null);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const currentAtivo = localStorage.getItem("Ativo");
-      setAtivo(currentAtivo);
-      if (currentAtivo) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-  };
-
-  // LOGIN VIA API
-
-  const nomeFromStorage =
-    typeof window !== "undefined"
-      ? localStorage.getItem("nomeCliente") || ""
-      : "";
-  const cpfFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("cpf") || "" : "";
-  const telefoneFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("Telefone") || "" : "";
-  const emailFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("email") || "" : "";
-  const senhaFromStorage =
-    typeof window !== "undefined" ? localStorage.getItem("senha") || "" : "";
-
   const [isLoading, setIsLoading] = useState(false);
+  const [ativoPorApi, setAtivoPorApi] = useState(false);
 
   const defaultOptions = {
     loop: true,
@@ -60,6 +21,52 @@ const Header = () => {
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
+  };
+
+  useEffect(() => {
+    const currentPaymentId = localStorage.getItem("paymentId");
+    const currentManual = localStorage.getItem("manual");
+    const currentAtivo = localStorage.getItem("Ativo");
+
+    if (currentManual) {
+      setAtivo(currentAtivo === "true" ? "Ativo" : "Inativo");
+      setIsLoggedIn(true);
+    } else if (currentPaymentId) {
+      checkSubscriptionStatus(currentPaymentId);
+    }
+  }, []);
+
+  const checkSubscriptionStatus = async (paymentId: string) => {
+    try {
+      const response = await fetch("/api/checkSubscriptionStatus", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentId }),
+      });
+
+      const data = await response.json();
+      if (data.status === "ACTIVE") {
+        setAtivo("Ativo");
+        setAtivoPorApi(true);
+        setIsLoggedIn(true);
+      } else {
+        setAtivo("Inativo");
+        setAtivoPorApi(false);
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error("Erro ao verificar status da assinatura:", error);
+      setAtivo("Erro ao carregar status");
+      setAtivoPorApi(false);
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
   };
 
   async function handleSubmit(event: React.MouseEvent<HTMLElement>) {
@@ -74,10 +81,16 @@ const Header = () => {
       const data = await response.json();
       const accessToken = data.accessToken;
 
-      const encryptedNome = await encryptData(nomeFromStorage);
-      const encryptedCpf = await encryptData(cpfFromStorage);
-      const encryptedEmail = await encryptData(emailFromStorage);
-      const encryptedTelefone = await encryptData(telefoneFromStorage);
+      const encryptedNome = await encryptData(
+        localStorage.getItem("nomeCliente") || ""
+      );
+      const encryptedCpf = await encryptData(localStorage.getItem("cpf") || "");
+      const encryptedEmail = await encryptData(
+        localStorage.getItem("email") || ""
+      );
+      const encryptedTelefone = await encryptData(
+        localStorage.getItem("Telefone") || ""
+      );
 
       await loginApi(
         accessToken,
@@ -105,7 +118,6 @@ const Header = () => {
       });
 
       const { encrypted } = await response.json();
-
       return encrypted;
     } catch (error) {
       console.error("Erro ao encriptar os dados:", error);
@@ -135,18 +147,8 @@ const Header = () => {
       });
 
       const data = await response.json();
-
-      console.log(data);
-      console.log(data.link);
-
-      if (!response.ok) {
-        alert(data.error);
-        return;
-      }
-
       if (data && data.link && data.link.dado && data.link.dado.link) {
         const url = data.link.dado.link;
-
         window.location.href = url;
       } else {
         console.log(
@@ -166,12 +168,11 @@ const Header = () => {
 
   const handleClosePerfil = () => {
     setIsPerfilVisible(false);
-    // setIsLoggedIn(false);
   };
 
   const handleLogoutPerfil = () => {
     setIsPerfilVisible(false);
-    setIsLoggedIn(false);
+    handleLogout();
   };
 
   return (
@@ -234,7 +235,7 @@ const Header = () => {
             </a>
 
             {isLoggedIn ? (
-              ativo === "true" ? (
+              ativo === "Ativo" ? (
                 <p id="item" onClick={handleSubmit}>
                   Acessar clube
                 </p>
@@ -245,7 +246,6 @@ const Header = () => {
                     query: { contaCriada: "true" },
                   }}
                 >
-                  {" "}
                   <p id="item">Obter acesso</p>
                 </Link>
               )

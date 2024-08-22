@@ -24,7 +24,7 @@ export async function sendWelcomeEmail(data: { email: string; name: string }) {
             <div style="padding: 20px; background-color: #E0E0E0; font-size: 18px;">
                 <div style="background-color: #fff; border-radius: 8px; overflow: hidden;">
                     <div style="padding: 20px; background-color: #08d40a; text-align: left;">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/benefitclients-eaba4.appspot.com/o/Digital%20Logo%20Completa%20-%20Transparente.png?alt=media&token=f647341c-cdf4-47d5-9bc5-f939dca3defd" alt="Logo Clube Poupy" style="max-width: 20%; height: auto;">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/benefitclients-eaba4.appspot.com/o/logoClaraNova.png?alt=media&token=249ce7b4-981f-49fa-9027-3528121c3417" alt="Logo Clube Poupy" style="max-width: 20%; height: auto;">
                     </div>
                     <div style="padding: 20px; border-bottom: 20px solid #08d40a; border-radius: 8px;">
                         <p><strong style="color: #08d40a;">Olá ${name},</strong></p>
