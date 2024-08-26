@@ -21,26 +21,36 @@ export default async function handler(
       return res.status(400).json({ message: 'CPF e senha são obrigatórios' });
    }
 
+   // Remover sinais não numéricos do CPF
    const cleanedCpf = cpf.replace(/\D/g, '');
+
+   if (cleanedCpf.length !== 11) {
+      return res.status(400).json({ message: 'CPF inválido. Verifique e tente novamente.' });
+   }
 
    try {
       const clientsRef = collection(db, 'Clients');
-      const q = query(
-         clientsRef,
-         where('cpf', '==', cleanedCpf),
-         where('senha', '==', senha),
-         where('Ativo', '==', true)
-      );
-
+      const q = query(clientsRef, where('senha', '==', senha), where('Ativo', '==', true));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-         return res.status(401).json({ message: 'CPF ou senha inválidos, ou conta inativa' });
+         return res.status(401).json({ message: 'Senha incorreta ou conta inativa. Verifique suas credenciais.' });
       }
 
+      // Verificação do CPF armazenado no banco (removendo sinais não numéricos)
+      const validUser = querySnapshot.docs.find((doc) => {
+         const storedCpf = doc.data().cpf.replace(/\D/g, '');
+         return storedCpf === cleanedCpf;
+      });
+
+      if (!validUser) {
+         return res.status(404).json({ message: 'CPF não encontrado. Verifique e tente novamente.' });
+      }
+
+      // Sucesso no login
       return res.status(200).json({ message: 'Login liberado', success: true });
    } catch (error) {
       console.error('Erro ao verificar login:', error);
-      return res.status(500).json({ message: 'Erro interno do servidor' });
+      return res.status(500).json({ message: 'Erro interno do servidor. Por favor, tente novamente mais tarde.' });
    }
 }
