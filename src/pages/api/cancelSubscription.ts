@@ -7,7 +7,7 @@ export default async function handler(req: { method: string; body: { id: any; };
       const { id } = req.body;
       console.log("Recebido id para cancelamento:", id);
 
-      const apiUrl = `https://sandbox.asaas.com/api/v3/subscriptions/${id}`;
+      const apiUrl = `https://asaas.com/api/v3/subscriptions/${id}`;
       console.log("Fazendo requisição para ASAAS API:", apiUrl);
 
       const accessToken = process.env.ASAAS_ACCESS_TOKEN;
