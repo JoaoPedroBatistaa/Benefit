@@ -1,3 +1,4 @@
+import AppMobile from "../../components/AppMobile";
 import Benefits from "../../components/Benefits";
 import Cashback from "../../components/Cashback";
 import Footer from "../../components/Footer";
@@ -7,6 +8,7 @@ import Cliente from "../../components/cliente/cliente";
 import Header from "../../components/header/header";
 import HeaderMobile from "../../components/headerMobile/Index";
 import SectionCalculadora from "../../components/sectionCalculadora/sectionCalculadora";
+
 function Home() {
   return (
     <div>
@@ -21,6 +23,7 @@ function Home() {
         <Benefits></Benefits>
         <SectionCalculadora />
         <Cashback></Cashback>
+        <AppMobile></AppMobile>
         <Gains></Gains>
         {/* <SectionApp /> */}
         <Footer></Footer>
