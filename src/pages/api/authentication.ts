@@ -5,6 +5,8 @@ import { db } from '../../../firebase';
 type Data = {
    message: string;
    success?: boolean;
+   nome?: string;
+   email?: string;
 };
 
 export default async function handler(
@@ -48,7 +50,16 @@ export default async function handler(
       }
 
       // Sucesso no login
-      return res.status(200).json({ message: 'Login liberado', success: true });
+      const userData = validUser.data();
+      const nomeCliente = userData.nomeCliente;
+      const email = userData.email;
+
+      return res.status(200).json({
+         message: 'Login liberado',
+         success: true,
+         nome: nomeCliente,
+         email: email
+      });
    } catch (error) {
       console.error('Erro ao verificar login:', error);
       return res.status(500).json({ message: 'Erro interno do servidor. Por favor, tente novamente mais tarde.' });
