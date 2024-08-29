@@ -29,10 +29,17 @@ const HeaderMobile = () => {
     const currentPaymentId = localStorage.getItem("paymentId");
     const currentManual = localStorage.getItem("manual");
     const currentAtivo = localStorage.getItem("Ativo");
+    const userId = localStorage.getItem("userId"); // Verifica se userId está armazenado
 
-    if (currentManual) {
+    if (userId) {
+      setIsLoggedIn(true); // Usuário está logado se userId existe
+      setAtivo(
+        currentManual ? (currentAtivo === "true" ? "Ativo" : "Inativo") : null
+      );
+    }
+
+    if (currentManual && currentAtivo) {
       setAtivo(currentAtivo === "true" ? "Ativo" : "Inativo");
-      setIsLoggedIn(true);
     } else if (currentPaymentId) {
       checkSubscriptionStatus(currentPaymentId);
     }
@@ -52,23 +59,22 @@ const HeaderMobile = () => {
       if (data.status === "ACTIVE") {
         setAtivo("Ativo");
         setAtivoPorApi(true);
-        setIsLoggedIn(true);
       } else {
         setAtivo("Inativo");
         setAtivoPorApi(false);
-        setIsLoggedIn(false);
+        // Não alterar o estado de isLoggedIn aqui
       }
     } catch (error) {
       console.error("Erro ao verificar status da assinatura:", error);
       setAtivo("Erro ao carregar status");
       setAtivoPorApi(false);
-      setIsLoggedIn(false);
     }
   };
 
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
+    router.push("/login"); // Redireciona para a página de login após logout
   };
 
   async function handleSubmit(event: React.MouseEvent<HTMLElement>) {
