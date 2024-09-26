@@ -5,9 +5,18 @@ export default class MyDocument extends Document {
     return (
       <Html lang="pt-BR">
         <Head>
-          <title>Clube Poupy</title>
+          {/* Qualquer outra meta tag ou conteúdo que você precise adicionar */}
         </Head>
         <body>
+          {/* Google Tag Manager (noscript) */}
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-M6QZ6LQD"
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            ></iframe>
+          </noscript>
           <Main />
           <NextScript />
         </body>
