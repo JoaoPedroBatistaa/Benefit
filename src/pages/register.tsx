@@ -144,6 +144,7 @@ export default function Register() {
       await addDoc(collection(db, "Clients"), {
         nomeCliente: nome,
         cpf: cpf,
+        cep: cep,
         email: email,
         senha: senha,
         Ativo: false,
@@ -209,6 +210,7 @@ export default function Register() {
       email,
       cpf,
       telefone,
+      cep,
     };
 
     const response = await fetch("/api/create-client", {

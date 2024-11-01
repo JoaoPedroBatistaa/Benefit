@@ -19,7 +19,7 @@ export default async function handler(
       return res.status(405).json({ success: false, message: 'Method Not Allowed' });
    }
 
-   const { nome, email, cpf, telefone } = req.body;
+   const { nome, email, cpf, telefone, cep } = req.body;
    console.log("Recebendo requisição com:", { nome, email, cpf, telefone });
 
 
@@ -30,6 +30,7 @@ export default async function handler(
          cpfCnpj: cpf,
          phone: telefone,
          mobilePhone: telefone,
+         postalCode: cep,
       }, {
          headers: {
             'accept': 'application/json',
